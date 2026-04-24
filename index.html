@@ -3,175 +3,176 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ระบบซักอบรีด</title>
+<title>Apinya Laundry - อภิญญา ซัก อบ รีด</title>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Sarabun', sans-serif; background: #f5f5f5; color: #222; }
-.container { max-width: 600px; margin: 0 auto; padding: 1rem; }
-h1 { font-size: 18px; font-weight: 600; padding: 1rem 0 0.5rem; }
-.tabs { display: flex; gap: 4px; border-bottom: 1px solid #ddd; margin-bottom: 1.5rem; }
-.tab { padding: 8px 16px; font-size: 14px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-.tab.active { color: #222; border-bottom: 2px solid #222; font-weight: 600; }
+body { font-family: 'Sarabun', sans-serif; background: #fdfdfd; color: #333; line-height: 1.6; }
+.container { max-width: 600px; margin: 0 auto; padding: 1.5rem; }
+.header-shop { text-align: center; margin-bottom: 2rem; }
+.tabs { display: flex; gap: 8px; border-bottom: 1px solid #eee; margin-bottom: 1.5rem; }
+.tab { padding: 10px 20px; font-size: 14px; cursor: pointer; border: none; background: none; color: #bbb; border-bottom: 2px solid transparent; transition: 0.3s; }
+.tab.active { color: #FF8C69; border-bottom: 2px solid #FF8C69; font-weight: 600; }
 .section { display: none; }
 .section.active { display: block; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
 .form-full { grid-column: 1 / -1; }
-.form-group { display: flex; flex-direction: column; gap: 4px; }
-.form-group label { font-size: 12px; color: #666; font-weight: 600; }
-.form-group input, .form-group textarea { padding: 8px 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #222; width: 100%; font-family: 'Sarabun', sans-serif; }
-.form-group textarea { resize: vertical; min-height: 64px; }
-.radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
-.radio-btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; font-size: 13px; background: #fff; color: #222; }
-.radio-btn.selected { background: #222; color: #fff; border-color: #222; }
-.btn-primary { background: #222; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; font-family: 'Sarabun', sans-serif; }
-.btn-primary:disabled { opacity: 0.5; }
-.card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 1rem; margin-bottom: 12px; }
+.form-group label { font-size: 12px; color: #666; font-weight: 600; display: block; margin-bottom: 5px; }
+.form-group input, .form-group textarea { padding: 12px; font-size: 14px; border: 1px solid #eee; border-radius: 12px; background: #fff; width: 100%; font-family: inherit; }
+.radio-group { display: flex; gap: 10px; flex-wrap: wrap; }
+.radio-btn { padding: 8px 16px; border: 1px solid #eee; border-radius: 10px; cursor: pointer; font-size: 13px; background: #fff; transition: 0.2s; }
+.radio-btn.selected { background: #FF8C69; color: #fff; border-color: #FF8C69; box-shadow: 0 4px 10px rgba(255,140,105,0.2); }
+.btn-primary { background: #FF8C69; color: #fff; border: none; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 15px; box-shadow: 0 8px 15px rgba(255,140,105,0.2); }
+.btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+.card { background: #fff; border-radius: 16px; padding: 1.2rem; margin-bottom: 15px; border: 1px solid #f5f5f5; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
 .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
-.card-name { font-weight: 600; font-size: 15px; }
+.card-name { font-weight: 600; font-size: 15px; color: #222; }
 .card-sub { font-size: 12px; color: #888; margin-top: 2px; }
-.badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
-.badge { padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-.b-pending { background: #FEF3C7; color: #92400E; }
-.b-done { background: #D1FAE5; color: #065F46; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.badge { padding: 4px 10px; border-radius: 8px; font-size: 11px; font-weight: 600; }
+.b-pending { background: #FFF4E5; color: #FF8C69; }
+.b-done { background: #E6F9F1; color: #00B894; }
 .b-urgent { background: #FEE2E2; color: #991B1B; }
-.b-normal { background: #F3F4F6; color: #374151; }
+.b-normal { background: #f0f0f0; color: #555; }
 .b-unpaid { background: #FEE2E2; color: #991B1B; }
-.b-paid { background: #D1FAE5; color: #065F46; }
+.b-paid { background: #E6F9F1; color: #00B894; }
 .card-detail { font-size: 13px; color: #555; margin-bottom: 3px; }
-.card-actions { display: flex; gap: 8px; margin-top: 10px; border-top: 1px solid #f0f0f0; padding-top: 10px; flex-wrap: wrap; }
-.btn-sm { padding: 5px 12px; font-size: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #f9f9f9; color: #222; font-family: 'Sarabun', sans-serif; }
-.btn-done { background: #D1FAE5; color: #065F46; border-color: #6EE7B7; }
-.btn-pay { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+.card-actions { display: flex; gap: 8px; margin-top: 12px; border-top: 1px dashed #eee; padding-top: 12px; flex-wrap: wrap; }
+.btn-sm { padding: 6px 12px; font-size: 12px; border: 1px solid #eee; border-radius: 8px; cursor: pointer; background: #fafafa; color: #444; font-family: inherit; }
+.btn-done { background: #E6F9F1; color: #00B894; border-color: #A7F3D0; }
+.btn-pay { background: #FFF4E5; color: #FF8C69; border-color: #FDE68A; }
 .btn-del { color: #999; margin-left: auto; }
 .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.stat { background: #fff; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid #e5e5e5; }
-.stat-num { font-size: 26px; font-weight: 700; }
+.stat { background: #fff; border-radius: 12px; padding: 12px; text-align: center; border: 1px solid #eee; }
+.stat-num { font-size: 24px; font-weight: 700; color: #222; }
 .stat-label { font-size: 11px; color: #888; margin-top: 2px; }
 .filters { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
-.chip { padding: 4px 12px; font-size: 12px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; background: #fff; color: #888; }
+.chip { padding: 6px 14px; font-size: 12px; border: 1px solid #eee; border-radius: 20px; cursor: pointer; background: #fff; color: #888; }
 .chip.active { background: #222; color: #fff; border-color: #222; }
 .empty { text-align: center; padding: 2rem; color: #aaa; font-size: 14px; }
-.loading { text-align: center; padding: 2rem; color: #aaa; }
-.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
-.toast.success { background: #D1FAE5; color: #065F46; }
-.toast.error { background: #FEE2E2; color: #991B1B; }
+.loading { text-align: center; padding: 2rem; color: #aaa; font-size: 14px; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 12px 24px; border-radius: 12px; font-size: 14px; font-weight: 600; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 999; color: #fff; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.toast.success { background: #00B894; }
+.toast.error { background: #FF7675; }
 .toast.show { opacity: 1; }
 .photo-area { display: flex; align-items: center; gap: 12px; }
-.photo-preview { width: 72px; height: 72px; background: #f5f5f5; border-radius: 8px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; overflow: hidden; font-size: 24px; }
+.photo-preview { width: 72px; height: 72px; background: #f9f9f9; border-radius: 12px; border: 2px dashed #ddd; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; overflow: hidden; font-size: 24px; color: #bbb; }
 .photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+.shop-info-card { margin-top: 2rem; padding: 1.5rem; background: #fff; border-radius: 16px; font-size: 13px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.02); }
 </style>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
 <div class="container">
-<h1>🧺 ระบบซักอบรีด</h1>
+  
+  <div class="header-shop">
+    <img src="https://raw.githubusercontent.com/Peachylochy/laundry/main/Apinyalaundry_logo.png" alt="อภิญญา ซัก อบ รีด" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 3px solid #FF8C69;">
+  </div>
 
-<div id="toast" class="toast"></div>
+  <div id="toast" class="toast"></div>
 
-<div class="tabs">
-  <button class="tab active" onclick="switchTab('add')">+ รับผ้า</button>
-  <button class="tab" onclick="switchTab('list')">รายการทั้งหมด</button>
-  <button class="tab" onclick="switchTab('track')">เช็คสถานะ</button>
-</div>
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('add')">+ รับผ้า</button>
+    <button class="tab" onclick="switchTab('list')">รายการทั้งหมด</button>
+    <button class="tab" onclick="switchTab('track')">เช็คสถานะ</button>
+  </div>
 
-<div id="tab-add" class="section active">
-  <div class="form-grid">
-    <div class="form-group">
-      <label>ชื่อเจ้าของผ้า</label>
-      <input type="text" id="owner" placeholder="เช่น พี่นิด" />
-    </div>
-    <div class="form-group">
-      <label>จากที่ไหน</label>
-      <input type="text" id="source" placeholder="เช่น ออฟฟิศ" />
-    </div>
-    <div class="form-group">
-      <label>วันที่รับผ้า</label>
-      <input type="date" id="pickup-date" />
-    </div>
-    <div class="form-group">
-      <label>ราคา (บาท)</label>
-      <input type="number" id="price" placeholder="0" min="0" />
-    </div>
-    <div class="form-group form-full">
-      <label>ประเภทผ้า / รายละเอียด</label>
-      <input type="text" id="desc" placeholder="เช่น เสื้อเชิ้ต 3 ตัว" />
-    </div>
-    <div class="form-group form-full">
-      <label>ประเภทการซัก</label>
-      <div class="radio-group" id="rg-wash">
-        <span class="radio-btn selected" onclick="pick('rg-wash',this,'wash_normal')">ซักรีดธรรมดา</span>
-        <span class="radio-btn" onclick="pick('rg-wash',this,'wash_dry')">ซักแห้ง</span>
-        <span class="radio-btn" onclick="pick('rg-wash',this,'wash_hand')">ซักมือ</span>
-      </div>
-    </div>
-    <div class="form-group form-full">
-      <label>ความเร่งด่วน</label>
-      <div class="radio-group" id="rg-urgent">
-        <span class="radio-btn selected" onclick="pick('rg-urgent',this,'false')">ปกติ</span>
-        <span class="radio-btn" onclick="pick('rg-urgent',this,'true')">ด่วน</span>
-      </div>
-    </div>
-    <div class="form-group form-full">
-      <label>การรับผ้าคืน</label>
-      <div class="radio-group" id="rg-delivery">
-        <span class="radio-btn selected" onclick="pick('rg-delivery',this,'pickup')">รับเองที่บ้าน</span>
-        <span class="radio-btn" onclick="pick('rg-delivery',this,'office')">ส่งที่ออฟฟิศ</span>
-      </div>
-    </div>
-    <div class="form-group form-full">
-      <label>แนบรูปผ้า</label>
-      <div class="photo-area">
-        <div class="photo-preview" id="photo-preview" onclick="document.getElementById('photo-input').click()">+</div>
-        <div>
-          <p style="font-size:13px;margin-bottom:4px;" id="photo-name">ยังไม่ได้เลือกรูป</p>
-          <p style="font-size:11px;color:#aaa;">รูปแสดงใน app เท่านั้น</p>
-          <div style="display:flex;gap:6px;margin-top:6px;">
-            <button class="btn-sm" onclick="document.getElementById('photo-input').click()">เลือกรูป</button>
-            <button class="btn-sm" id="btn-remove-photo" style="display:none;background:#FEE2E2;color:#991B1B;" onclick="removePhoto()">ลบรูป</button>
-          </div>
+  <div id="tab-add" class="section active">
+    <div class="form-grid">
+      <div class="form-group"><label>ชื่อลูกค้า</label><input type="text" id="owner" placeholder="เช่น พี่นิด"></div>
+      <div class="form-group"><label>จากที่ไหน</label><input type="text" id="source" placeholder="เช่น บ้าน / ออฟฟิศ"></div>
+      <div class="form-group"><label>เบอร์โทรศัพท์</label><input type="text" id="phone" placeholder="06x-xxxxxxx"></div>
+      <div class="form-group"><label>Line ID</label><input type="text" id="lineid" placeholder="@id"></div>
+      <div class="form-group"><label>วันที่รับผ้า</label><input type="date" id="pickup-date"></div>
+      <div class="form-group"><label>ราคา (บาท) *ใส่ 0 ถ้ารอประเมิน</label><input type="number" id="price" value="0" min="0"></div>
+      <div class="form-group form-full"><label>รายละเอียดผ้า</label><input type="text" id="desc" placeholder="เช่น เสื้อ 3 กางเกง 2"></div>
+      
+      <div class="form-group form-full">
+        <label>ประเภทการซัก</label>
+        <div class="radio-group" id="rg-wash">
+          <span class="radio-btn selected" onclick="pick('rg-wash',this,'wash_normal')">ซักรีดธรรมดา</span>
+          <span class="radio-btn" onclick="pick('rg-wash',this,'wash_dry')">ซักแห้ง</span>
+          <span class="radio-btn" onclick="pick('rg-wash',this,'wash_hand')">ซักมือ</span>
         </div>
-        <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this)" />
+      </div>
+      <div class="form-group form-full">
+        <label>ความเร่งด่วน</label>
+        <div class="radio-group" id="rg-urgent">
+          <span class="radio-btn selected" onclick="pick('rg-urgent',this,'false')">ปกติ</span>
+          <span class="radio-btn" onclick="pick('rg-urgent',this,'true')">ด่วน</span>
+        </div>
+      </div>
+      <div class="form-group form-full">
+        <label>การรับผ้าคืน</label>
+        <div class="radio-group" id="rg-delivery">
+          <span class="radio-btn selected" onclick="pick('rg-delivery',this,'pickup')">รับเองที่ร้าน</span>
+          <span class="radio-btn" onclick="pick('rg-delivery',this,'office')">ส่งให้ลูกค้า</span>
+        </div>
+      </div>
+      <div class="form-group form-full">
+        <label>แนบรูปผ้า</label>
+        <div class="photo-area">
+          <div class="photo-preview" id="photo-preview" onclick="document.getElementById('photo-input').click()">+</div>
+          <div>
+            <p style="font-size:13px;margin-bottom:4px;" id="photo-name">ยังไม่ได้เลือกรูป</p>
+            <div style="display:flex;gap:6px;margin-top:6px;">
+              <button class="btn-sm" onclick="document.getElementById('photo-input').click()">เลือกรูป</button>
+              <button class="btn-sm" id="btn-remove-photo" style="display:none;background:#FEE2E2;color:#991B1B;" onclick="removePhoto()">ลบรูป</button>
+            </div>
+          </div>
+          <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this)">
+        </div>
+      </div>
+      <div class="form-group form-full">
+        <label>หมายเหตุ</label>
+        <textarea id="note" placeholder="เช่น ระวังผ้าสีตก, รีดจีบคมๆ"></textarea>
       </div>
     </div>
-    <div class="form-group form-full">
-      <label>หมายเหตุ</label>
-      <textarea id="note" placeholder="เช่น ระวังผ้าสี, อย่าอบ"></textarea>
+    <button class="btn-primary" id="btn-add" onclick="addOrder()">บันทึกรายการผ้า</button>
+  </div>
+
+  <div id="tab-list" class="section">
+    <div class="stats">
+      <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-label">รายการทั้งหมด</div></div>
+      <div class="stat"><div class="stat-num" id="stat-pending">—</div><div class="stat-label">ยังไม่เสร็จ</div></div>
+      <div class="stat"><div class="stat-num" id="stat-unpaid">—</div><div class="stat-label">ยังไม่เก็บเงิน</div></div>
     </div>
+    <div class="filters">
+      <span class="chip active" onclick="setFilter('all',this)">ทั้งหมด</span>
+      <span class="chip" onclick="setFilter('pending',this)">ยังไม่เสร็จ</span>
+      <span class="chip" onclick="setFilter('done',this)">เสร็จแล้ว</span>
+      <span class="chip" onclick="setFilter('urgent',this)">ด่วน</span>
+      <span class="chip" onclick="setFilter('unpaid',this)">ยังไม่เก็บเงิน</span>
+    </div>
+    <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
+    <button class="btn-sm" style="width:100%;margin-top:8px;" onclick="loadOrders()">รีเฟรชข้อมูล</button>
   </div>
-  <button class="btn-primary" id="btn-add" onclick="addOrder()">บันทึกรายการผ้า</button>
-</div>
 
-<div id="tab-list" class="section">
-  <div class="stats">
-    <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-label">รายการทั้งหมด</div></div>
-    <div class="stat"><div class="stat-num" id="stat-pending">—</div><div class="stat-label">ยังไม่เสร็จ</div></div>
-    <div class="stat"><div class="stat-num" id="stat-unpaid">—</div><div class="stat-label">ยังไม่เก็บเงิน</div></div>
+  <div id="tab-track" class="section">
+    <p style="font-size:14px;color:#888;margin-bottom:8px;">ค้นหาสถานะผ้าด้วยชื่อลูกค้า</p>
+    <div style="display:flex;gap:8px;margin-bottom:1rem;">
+      <input type="text" id="track-name" placeholder="พิมพ์ชื่อเพื่อค้นหา" style="flex:1;padding:10px 12px;font-size:14px;border:1px solid #ddd;border-radius:12px;font-family:inherit;">
+      <button class="btn-primary" onclick="trackOrder()" style="margin-top:0; width:auto; padding:10px 20px;">ค้นหา</button>
+    </div>
+    <div id="track-result"></div>
   </div>
-  <div class="filters">
-    <span class="chip active" onclick="setFilter('all',this)">ทั้งหมด</span>
-    <span class="chip" onclick="setFilter('pending',this)">ยังไม่เสร็จ</span>
-    <span class="chip" onclick="setFilter('done',this)">เสร็จแล้ว</span>
-    <span class="chip" onclick="setFilter('urgent',this)">ด่วน</span>
-    <span class="chip" onclick="setFilter('unpaid',this)">ยังไม่เก็บเงิน</span>
-  </div>
-  <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
-  <button class="btn-sm" style="width:100%;margin-top:8px;" onclick="loadOrders()">รีเฟรช</button>
-</div>
 
-<div id="tab-track" class="section">
-  <p style="font-size:14px;color:#888;margin-bottom:8px;">ค้นหาสถานะผ้าด้วยชื่อ</p>
-  <div style="display:flex;gap:8px;margin-bottom:1rem;">
-    <input type="text" id="track-name" placeholder="พิมพ์ชื่อ เช่น พี่นิด" style="flex:1;padding:8px 10px;font-size:14px;border:1px solid #ddd;border-radius:8px;font-family:Sarabun,sans-serif;" />
-    <button class="btn-sm" onclick="trackOrder()" style="padding:8px 16px;font-size:14px;">ค้นหา</button>
+  <div class="shop-info-card">
+    <p style="color:#FF8C69; font-weight:700; margin-bottom:10px; font-size:15px;">📍 ข้อมูลติดต่อและชำระเงิน</p>
+    <p>📞 ติดต่อ: 064-253-7741 (คุณอภิญญา)</p>
+    <p>⏰ เวลาเปิด-ปิด: 08.00 - 19.30 น. <br><span style="color:#888; font-size:11px;">(ถ้ามาก่อนหรือนอกเวลากรุณาติดต่อทางร้าน)</span></p>
+    <p style="margin-top:8px;">💳 ธนาคารกสิกรไทย: <b>068-109-6884</b></p>
+    <p>👤 ชื่อบัญชี: อภิญญา สูงขาว</p>
+    <p style="margin-top:12px; padding-top:12px; border-top:1px dashed #eee;">
+      <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" style="color:#FF8C69; text-decoration:none; font-weight:600;">🌍 แผนที่ร้าน (Yong Services) บน Google Maps</a>
+    </p>
   </div>
-  <div id="track-result"></div>
-</div>
+
 </div>
 
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbx9H0FpevZ7H6lLec5WcZEGSUASL-cBsYQHl-pF8km7UyEBXocWWTJBrhNMCAwug4zz/exec';
 const WASH = { wash_normal:'ซักรีดธรรมดา', wash_dry:'ซักแห้ง', wash_hand:'ซักมือ' };
-const DELIVERY = { pickup:'รับเองที่บ้าน', office:'ส่งที่ออฟฟิศ' };
+const DELIVERY = { pickup:'รับเองที่ร้าน', office:'ส่งให้ลูกค้า' };
 let orders=[], filter='all', photoData=null;
 let sel={wash:'wash_normal',urgent:'false',delivery:'pickup'};
 
@@ -182,6 +183,7 @@ function toast(msg,type='success'){
   el.textContent=msg; el.className='toast '+type+' show';
   setTimeout(()=>el.classList.remove('show'),3000);
 }
+
 function pick(g,el,v){
   document.querySelectorAll('#'+g+' .radio-btn').forEach(b=>b.classList.remove('selected'));
   el.classList.add('selected');
@@ -189,6 +191,7 @@ function pick(g,el,v){
   if(g==='rg-urgent') sel.urgent=v;
   if(g==='rg-delivery') sel.delivery=v;
 }
+
 function removePhoto(){
   photoData=null;
   document.getElementById('photo-preview').innerHTML='+';
@@ -196,6 +199,7 @@ function removePhoto(){
   document.getElementById('btn-remove-photo').style.display='none';
   document.getElementById('photo-input').value='';
 }
+
 function previewPhoto(input){
   if(input.files&&input.files[0]){
     const file=input.files[0];
@@ -217,38 +221,37 @@ function previewPhoto(input){
     reader.readAsDataURL(file);
   }
 }
+
 async function api(params) {
-  const r = await fetch(API, {
-    method: 'POST',
-    body: JSON.stringify(params)
-  });
-  return r.json();
-}
-async function api(params) {
-  const r = await fetch(API, {
-    method: 'POST',
-    body: JSON.stringify(params)
-  });
+  const r = await fetch(API, { method: 'POST', body: JSON.stringify(params) });
   return r.json();
 }
 
 async function addOrder(){
   const owner=document.getElementById('owner').value.trim();
   const source=document.getElementById('source').value.trim();
+  const phone=document.getElementById('phone').value.trim();
+  const lineid=document.getElementById('lineid').value.trim();
   const desc=document.getElementById('desc').value.trim();
   const date=document.getElementById('pickup-date').value;
   const note=document.getElementById('note').value.trim();
   const price=document.getElementById('price').value||'0';
+  
   if(!owner||!desc){toast('กรุณากรอกชื่อและรายละเอียดผ้าค่ะ','error');return;}
+  
   const btn=document.getElementById('btn-add');
   btn.disabled=true; btn.textContent='กำลังบันทึก...';
   try{
-    // เพิ่ม photo: photoData ลงไปตรงนี้ครับ
-    const data=await api({action:'add',owner,source,desc,date,wash:sel.wash,urgent:sel.urgent,delivery:sel.delivery,note,price,photo:photoData});
+    const data=await api({
+      action:'add', owner, source, phone, lineid, desc, date, 
+      wash:sel.wash, urgent:sel.urgent, delivery:sel.delivery, 
+      note, price, photo:photoData
+    });
     
     if(data.success){
       toast('บันทึกแล้วค่ะ! รหัส: '+data.id);
-      ['owner','source','desc','note','price'].forEach(id=>document.getElementById(id).value='');
+      ['owner','source','phone','lineid','desc','note','price'].forEach(id=>document.getElementById(id).value='');
+      document.getElementById('price').value='0';
       removePhoto();
       ['rg-wash','rg-urgent','rg-delivery'].forEach(g=>document.querySelectorAll('#'+g+' .radio-btn').forEach((b,i)=>b.classList.toggle('selected',i===0)));
       sel={wash:'wash_normal',urgent:'false',delivery:'pickup'};
@@ -257,6 +260,7 @@ async function addOrder(){
   } catch(e){ toast('เชื่อมต่อไม่ได้ค่ะ','error'); }
   btn.disabled=false; btn.textContent='บันทึกรายการผ้า';
 }
+
 async function loadOrders(){
   document.getElementById('order-list').innerHTML='<div class="loading">กำลังโหลด...</div>';
   try{
@@ -264,11 +268,13 @@ async function loadOrders(){
     orders=data.orders||[]; renderList();
   } catch(e){ document.getElementById('order-list').innerHTML='<div class="empty">เชื่อมต่อไม่ได้ค่ะ</div>'; }
 }
+
 function setFilter(f,el){
   filter=f;
   document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
   el.classList.add('active'); renderList();
 }
+
 function getFiltered(){
   if(filter==='all') return orders;
   if(filter==='pending') return orders.filter(o=>o.status==='pending');
@@ -277,6 +283,7 @@ function getFiltered(){
   if(filter==='unpaid') return orders.filter(o=>String(o.paid)!=='true');
   return orders;
 }
+
 function renderList(){
   const done=orders.filter(o=>o.status==='done').length;
   document.getElementById('stat-total').textContent=orders.length;
@@ -288,7 +295,11 @@ function renderList(){
   el.innerHTML=list.sort((a,b)=>(String(b.urgent)==='true')-(String(a.urgent)==='true')).map(o=>`
     <div class="card">
       <div class="card-header">
-        <div><div class="card-name">${o.owner}</div><div class="card-sub">${o.id}${o.source?' · '+o.source:''} · รับวันที่ ${o.date}</div></div>
+        <div>
+          <div class="card-name">${o.owner}</div>
+          <div class="card-sub">${o.id}${o.source?' · '+o.source:''} · รับวันที่ ${o.date}</div>
+          ${o.phone ? `<div style="font-size:11px; color:#FF8C69; margin-top:2px;">📞 ${o.phone}</div>` : ''}
+        </div>
         <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
           <span class="badge ${o.status==='done'?'b-done':'b-pending'}">${o.status==='done'?'เสร็จแล้ว':'กำลังดำเนินการ'}</span>
           ${String(o.urgent)==='true'?'<span class="badge b-urgent">ด่วน</span>':''}
@@ -297,10 +308,16 @@ function renderList(){
       <div class="badges">
         <span class="badge b-normal">${WASH[o.wash]||o.wash}</span>
         <span class="badge b-normal">${DELIVERY[o.delivery]||o.delivery}</span>
-        <span class="badge ${String(o.paid)==='true'?'b-paid':'b-unpaid'}">${String(o.paid)==='true'?'เก็บเงินแล้ว':(o.price&&o.price!='0'?'ค้างชำระ ฿'+o.price:'ยังไม่กำหนดราคา')}</span>
+        <span class="badge ${String(o.paid)==='true'?'b-paid':'b-unpaid'}">
+          ${String(o.paid)==='true'?'เก็บเงินแล้ว':(o.price&&o.price!='0'?'ค้างชำระ ฿'+o.price:'รอประเมินราคา')}
+        </span>
       </div>
       <div class="card-detail">${o.desc}</div>
       ${o.note?`<div class="card-detail" style="color:#aaa;">หมายเหตุ: ${o.note}</div>`:''}
+      <div style="font-size:13px; color:#333; margin-top:8px; font-weight:600;">
+        ราคา: ฿${o.price||0} 
+        <button onclick="editPrice('${o.id}')" style="border:none; background:none; color:#bbb; cursor:pointer; text-decoration:underline; font-size:11px;">(แก้ไขราคา)</button>
+      </div>
       <div class="card-actions">
         ${o.status==='pending'?`<button class="btn-sm btn-done" onclick="upd('${o.id}','status','done')">เสร็จแล้ว</button>`:`<button class="btn-sm" onclick="upd('${o.id}','status','pending')">ย้อนกลับ</button>`}
         ${String(o.paid)!=='true'?`<button class="btn-sm btn-pay" onclick="upd('${o.id}','paid','true')">เก็บเงินแล้ว</button>`:''}
@@ -309,6 +326,14 @@ function renderList(){
     </div>
   `).join('');
 }
+
+async function editPrice(id){
+  const newPrice = prompt('กรอกราคาใหม่ (เฉพาะตัวเลข):');
+  if(newPrice !== null && newPrice.trim() !== '') {
+    upd(id, 'price', newPrice.trim());
+  }
+}
+
 async function upd(id,field,value){
   try{
     await api({action:'update',id,field,value});
@@ -317,6 +342,7 @@ async function upd(id,field,value){
     toast('อัปเดตแล้วค่ะ');
   } catch(e){toast('อัปเดตไม่ได้ค่ะ','error');}
 }
+
 async function del(id){
   if(!confirm('ลบรายการนี้?')) return;
   try{
@@ -324,6 +350,7 @@ async function del(id){
     orders=orders.filter(x=>x.id!==id); renderList(); toast('ลบแล้วค่ะ');
   } catch(e){toast('ลบไม่ได้ค่ะ','error');}
 }
+
 async function trackOrder(){
   const name=document.getElementById('track-name').value.trim().toLowerCase();
   const el=document.getElementById('track-result');
@@ -337,7 +364,7 @@ async function trackOrder(){
       <div class="card">
         <div class="card-header">
           <div><div class="card-name">${o.owner}</div><div class="card-sub">${o.id}${o.source?' · '+o.source:''} · รับวันที่ ${o.date}</div></div>
-          <span class="badge ${o.status==='done'?'b-done':'b-pending'}">${o.status==='done'?'เสร็จแล้ว พร้อมรับคืน':'กำลังดำเนินการ'}</span>
+          <span class="badge ${o.status==='done'?'b-done':'b-pending'}">${o.status==='done'?'เสร็จพร้อมรับ':'กำลังดำเนินการ'}</span>
         </div>
         <div class="badges">
           <span class="badge b-normal">${WASH[o.wash]||o.wash}</span>
@@ -346,17 +373,27 @@ async function trackOrder(){
         </div>
         <div class="card-detail">${o.desc}</div>
         ${o.note?`<div class="card-detail" style="color:#aaa;">หมายเหตุ: ${o.note}</div>`:''}
+        <div style="font-size:13px; margin-top:8px; font-weight:600;">ยอดชำระ: ฿${o.price||0} ${String(o.paid)==='true'?'<span style="color:#00B894">(ชำระแล้ว)</span>':''}</div>
       </div>
     `).join('');
   } catch(e){el.innerHTML='<div class="empty">เชื่อมต่อไม่ได้ค่ะ</div>';}
 }
+
 function switchTab(name){
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['add','list','track'][i]===name));
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='list') loadOrders();
 }
-loadOrders();
+
+// แยกระบบลูกค้า ถ้าเข้าด้วย ?view=customer จะซ่อนเมนูแอดมิน
+const urlParams = new URLSearchParams(window.location.search);
+if(urlParams.get('view') === 'customer') {
+  document.querySelector('.tabs').style.display = 'none';
+  switchTab('track');
+} else {
+  loadOrders();
+}
 </script>
 </body>
 </html>
