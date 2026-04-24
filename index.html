@@ -217,10 +217,21 @@ function previewPhoto(input){
     reader.readAsDataURL(file);
   }
 }
-async function api(params){
-  const r=await fetch(API+'?'+new URLSearchParams(params).toString());
+async function api(params) {
+  const r = await fetch(API, {
+    method: 'POST',
+    body: JSON.stringify(params)
+  });
   return r.json();
 }
+async function api(params) {
+  const r = await fetch(API, {
+    method: 'POST',
+    body: JSON.stringify(params)
+  });
+  return r.json();
+}
+
 async function addOrder(){
   const owner=document.getElementById('owner').value.trim();
   const source=document.getElementById('source').value.trim();
@@ -232,7 +243,9 @@ async function addOrder(){
   const btn=document.getElementById('btn-add');
   btn.disabled=true; btn.textContent='กำลังบันทึก...';
   try{
-    const data=await api({action:'add',owner,source,desc,date,wash:sel.wash,urgent:sel.urgent,delivery:sel.delivery,note,price});
+    // เพิ่ม photo: photoData ลงไปตรงนี้ครับ
+    const data=await api({action:'add',owner,source,desc,date,wash:sel.wash,urgent:sel.urgent,delivery:sel.delivery,note,price,photo:photoData});
+    
     if(data.success){
       toast('บันทึกแล้วค่ะ! รหัส: '+data.id);
       ['owner','source','desc','note','price'].forEach(id=>document.getElementById(id).value='');
