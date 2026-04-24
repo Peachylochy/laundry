@@ -6,407 +6,605 @@
 <title>Apinya Laundry</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root {
-  --p900: #1E0A3C; --p800: #2D1060; --p700: #3D1880;
-  --p600: #5B2D9E; --p500: #7B4DBE; --p400: #9B6DD8;
-  --p200: #D4B8F0; --p100: #EDE0FF; --p50: #F7F2FF;
-  --cream: #FBF7EE; --gold: #C8943A;
-  --text: #1A0A33; --text2: #4A3A6A; --text3: #8A7AAA;
-  --white: #FFFFFF; --bg: #F0EBF8;
-  --green: #0F5C38; --green-bg: #E3F5EC; --green-b: #8FDAB8;
-  --red: #7A1020; --red-bg: #FCEAED; --red-b: #F5A8B5;
-  --amber: #6A3E00; --amber-bg: #FEF0D0; --amber-b: #F0C860;
-  --border: #E2D8F5;
-  --sh: 0 2px 16px rgba(60,20,120,0.09);
-  --sh-sm: 0 1px 6px rgba(60,20,120,0.06);
+:root{
+  --p900:#1E0A3C;--p800:#2D1060;--p700:#3D1880;--p600:#5B2D9E;--p500:#7B4DBE;--p400:#9B6DD8;
+  --p200:#D4B8F0;--p100:#EDE0FF;--p50:#F7F2FF;
+  --text:#1A0A33;--text2:#4A3A6A;--text3:#8A7AAA;--white:#FFFFFF;--bg:#F0EBF8;
+  --green:#0F5C38;--green-bg:#E3F5EC;--green-b:#8FDAB8;
+  --red:#7A1020;--red-bg:#FCEAED;--red-b:#F5A8B5;
+  --amber:#6A3E00;--amber-bg:#FEF0D0;--amber-b:#F0C860;
+  --border:#E2D8F5;--sh:0 2px 16px rgba(60,20,120,0.09);--sh-sm:0 1px 6px rgba(60,20,120,0.06);
 }
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-/* LOGIN */
-.login-wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--p900) 0%,var(--p700) 50%,var(--p500) 100%);}
-.login-box{background:var(--white);border-radius:24px;padding:36px 32px;width:90%;max-width:360px;box-shadow:0 20px 60px rgba(30,10,60,0.4);text-align:center;}
-.login-logo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--p200);margin:0 auto 16px;display:block;}
-.login-title{font-family:'Prompt',sans-serif;font-size:20px;font-weight:700;color:var(--p800);margin-bottom:4px;}
-.login-sub{font-size:13px;color:var(--text3);margin-bottom:24px;}
-.login-input{width:100%;padding:12px 16px;font-size:15px;border:2px solid var(--border);border-radius:12px;font-family:'Sarabun',sans-serif;color:var(--text);background:var(--p50);text-align:center;letter-spacing:0.1em;margin-bottom:12px;transition:all 0.2s;}
-.login-input:focus{outline:none;border-color:var(--p500);box-shadow:0 0 0 3px rgba(91,45,158,0.15);}
-.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Prompt',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(91,45,158,0.4);transition:all 0.2s;}
-.login-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(91,45,158,0.5);}
-.login-err{color:var(--red);font-size:13px;margin-top:8px;min-height:20px;}
+/* COMMON */
+.wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,var(--p900),var(--p700) 50%,var(--p500));}
+.box{background:var(--white);border-radius:24px;padding:32px;width:90%;max-width:380px;box-shadow:0 20px 60px rgba(30,10,60,0.4);text-align:center;}
+.box-logo{width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid var(--p200);margin:0 auto 14px;display:block;}
+.box-title{font-family:'Prompt',sans-serif;font-size:20px;font-weight:700;color:var(--p800);margin-bottom:3px;}
+.box-sub{font-size:13px;color:var(--text3);margin-bottom:22px;}
+.inp{width:100%;padding:12px 16px;font-size:14px;border:2px solid var(--border);border-radius:12px;font-family:'Sarabun',sans-serif;color:var(--text);background:var(--p50);margin-bottom:10px;transition:all 0.2s;}
+.inp:focus{outline:none;border-color:var(--p500);box-shadow:0 0 0 3px rgba(91,45,158,0.12);}
+.btn-main{width:100%;padding:13px;background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;font-family:'Prompt',sans-serif;cursor:pointer;box-shadow:0 4px 16px rgba(91,45,158,0.4);transition:all 0.2s;margin-top:4px;}
+.btn-main:disabled{opacity:0.5;cursor:not-allowed;}
+.err-text{color:var(--red);font-size:12px;margin-top:6px;min-height:18px;}
 
 /* HEADER */
-.header{background:linear-gradient(135deg,var(--p900) 0%,var(--p700) 55%,var(--p600) 100%);padding:0 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;height:60px;box-shadow:0 2px 20px rgba(30,10,60,0.4);}
-.logo-ring{width:42px;height:42px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);overflow:hidden;flex-shrink:0;background:var(--p200);}
+.header{background:linear-gradient(135deg,var(--p900),var(--p700) 55%,var(--p600));padding:0 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;height:58px;box-shadow:0 2px 20px rgba(30,10,60,0.4);}
+.logo-ring{width:40px;height:40px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);overflow:hidden;flex-shrink:0;background:var(--p200);}
 .logo-ring img{width:100%;height:100%;object-fit:cover;}
-.htext h1{font-family:'Prompt',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:0.02em;}
-.htext p{font-size:10px;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.07em;}
-.hbadge{margin-left:auto;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:4px 10px;font-size:10px;color:rgba(255,255,255,0.85);white-space:nowrap;}
-.hlogout{margin-left:8px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 10px;font-size:11px;color:rgba(255,255,255,0.7);cursor:pointer;font-family:'Sarabun',sans-serif;}
+.htext h1{font-family:'Prompt',sans-serif;font-size:13px;font-weight:700;color:#fff;}
+.htext p{font-size:10px;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:0.06em;}
+.hright{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.hbadge{background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:20px;padding:3px 9px;font-size:10px;color:rgba(255,255,255,0.85);}
+.hbtn{background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:4px 9px;font-size:11px;color:rgba(255,255,255,0.7);cursor:pointer;font-family:'Sarabun',sans-serif;}
+.status-open{background:#1a6b45;color:#fff;border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;}
+.status-closed{background:#7a1020;color:#fff;border-radius:20px;padding:2px 8px;font-size:10px;font-weight:700;}
 
 /* TABS */
-.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:99;box-shadow:var(--sh-sm);}
-.tab{flex:1;padding:12px 4px;font-size:12px;font-family:'Sarabun',sans-serif;cursor:pointer;border:none;background:none;color:var(--text3);font-weight:500;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
+.tabs{display:flex;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:58px;z-index:99;box-shadow:var(--sh-sm);}
+.tab{flex:1;padding:11px 4px;font-size:11px;font-family:'Sarabun',sans-serif;cursor:pointer;border:none;background:none;color:var(--text3);font-weight:500;border-bottom:2.5px solid transparent;margin-bottom:-1px;transition:all 0.2s;}
 .tab.active{color:var(--p600);border-bottom-color:var(--p600);font-weight:700;}
-
-.section{display:none;padding:14px;max-width:600px;margin:0 auto;}
+.section{display:none;padding:14px;max-width:640px;margin:0 auto;}
 .section.active{display:block;}
 
-/* SECTION HEAD */
-.sh{display:flex;align-items:center;gap:8px;margin-bottom:14px;}
-.sh-bar{width:4px;height:20px;background:var(--p600);border-radius:4px;}
-.sh h2{font-family:'Prompt',sans-serif;font-size:14px;font-weight:600;color:var(--p800);}
-
 /* FORM */
-.fc{background:var(--white);border-radius:16px;padding:16px;box-shadow:var(--sh-sm);border:1px solid var(--border);margin-bottom:10px;}
-.fc-t{font-family:'Prompt',sans-serif;font-size:11px;font-weight:600;color:var(--p500);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--border);}
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.sh{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.sh-bar{width:4px;height:18px;background:var(--p600);border-radius:4px;}
+.sh h2{font-family:'Prompt',sans-serif;font-size:14px;font-weight:600;color:var(--p800);}
+.fc{background:var(--white);border-radius:14px;padding:14px;box-shadow:var(--sh-sm);border:1px solid var(--border);margin-bottom:10px;}
+.fc-t{font-family:'Prompt',sans-serif;font-size:10px;font-weight:700;color:var(--p500);letter-spacing:0.07em;text-transform:uppercase;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid var(--border);}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
 .ff{grid-column:1/-1;}
-.f{display:flex;flex-direction:column;gap:4px;}
-.f label{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:0.05em;text-transform:uppercase;}
-.f input,.f textarea{padding:9px 12px;font-size:13px;border:1.5px solid var(--border);border-radius:10px;background:var(--p50);color:var(--text);width:100%;font-family:'Sarabun',sans-serif;transition:all 0.2s;}
-.f input:focus,.f textarea:focus{outline:none;border-color:var(--p400);background:var(--white);box-shadow:0 0 0 3px rgba(91,45,158,0.1);}
-.f textarea{resize:vertical;min-height:64px;}
-.rg{display:flex;gap:6px;flex-wrap:wrap;}
-.rb{padding:6px 13px;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;font-size:12px;background:var(--p50);color:var(--text2);font-family:'Sarabun',sans-serif;transition:all 0.18s;font-weight:500;}
-.rb.on{background:var(--p600);color:#fff;border-color:var(--p600);font-weight:600;box-shadow:0 2px 8px rgba(91,45,158,0.3);}
+.f{display:flex;flex-direction:column;gap:3px;}
+.f label{font-size:10px;color:var(--text2);font-weight:700;letter-spacing:0.04em;text-transform:uppercase;}
+.f input,.f select,.f textarea{padding:8px 11px;font-size:13px;border:1.5px solid var(--border);border-radius:9px;background:var(--p50);color:var(--text);width:100%;font-family:'Sarabun',sans-serif;transition:all 0.2s;}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--p400);background:var(--white);}
+.f textarea{resize:vertical;min-height:56px;}
+.rg{display:flex;gap:5px;flex-wrap:wrap;}
+.rb{padding:5px 11px;border:1.5px solid var(--border);border-radius:18px;cursor:pointer;font-size:11px;background:var(--p50);color:var(--text2);font-family:'Sarabun',sans-serif;transition:all 0.18s;font-weight:500;}
+.rb.on{background:var(--p600);color:#fff;border-color:var(--p600);font-weight:600;}
+.btn-purple{background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;padding:11px 20px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:4px;font-family:'Prompt',sans-serif;box-shadow:0 3px 12px rgba(91,45,158,0.3);transition:all 0.2s;}
+.btn-purple:disabled{opacity:0.5;cursor:not-allowed;}
 
-.btn-main{background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;padding:13px 20px;border-radius:12px;font-size:14px;font-weight:700;cursor:pointer;width:100%;margin-top:4px;font-family:'Prompt',sans-serif;box-shadow:0 4px 14px rgba(91,45,158,0.35);transition:all 0.2s;}
-.btn-main:hover{transform:translateY(-1px);}
-.btn-main:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
-
-/* PHOTO BOX */
-.parea{display:flex;align-items:center;gap:12px;}
-.pbox{width:72px;height:72px;background:var(--p50);border-radius:12px;border:2px dashed var(--p400);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;font-size:24px;color:var(--p400);transition:all 0.2s;}
-.pbox:hover{border-color:var(--p600);background:var(--p100);}
-.pbox img{width:100%;height:100%;object-fit:cover;}
+/* PRICE CALCULATOR */
+.price-box{background:linear-gradient(135deg,var(--p50),var(--p100));border:1.5px solid var(--p200);border-radius:12px;padding:12px 14px;margin-top:8px;}
+.price-total{font-family:'Prompt',sans-serif;font-size:22px;font-weight:700;color:var(--p700);margin-bottom:4px;}
+.price-breakdown{font-size:11px;color:var(--text2);}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
-.stat{background:var(--white);border-radius:12px;padding:12px 8px;text-align:center;border:1px solid var(--border);box-shadow:var(--sh-sm);}
-.stat-n{font-family:'Prompt',sans-serif;font-size:28px;font-weight:700;color:var(--p600);line-height:1;}
-.stat-l{font-size:10px;color:var(--text3);margin-top:3px;font-weight:500;}
-
-/* CHIPS */
-.chips{display:flex;gap:5px;margin-bottom:12px;flex-wrap:wrap;}
-.chip{padding:5px 12px;font-size:11px;border:1.5px solid var(--border);border-radius:20px;cursor:pointer;background:var(--white);color:var(--text3);font-family:'Sarabun',sans-serif;font-weight:600;transition:all 0.18s;}
+.stat{background:var(--white);border-radius:12px;padding:10px 6px;text-align:center;border:1px solid var(--border);box-shadow:var(--sh-sm);}
+.stat-n{font-family:'Prompt',sans-serif;font-size:26px;font-weight:700;color:var(--p600);line-height:1;}
+.stat-l{font-size:10px;color:var(--text3);margin-top:2px;font-weight:500;}
+.chips{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;}
+.chip{padding:4px 11px;font-size:11px;border:1.5px solid var(--border);border-radius:18px;cursor:pointer;background:var(--white);color:var(--text3);font-family:'Sarabun',sans-serif;font-weight:600;}
 .chip.on{background:var(--p600);color:#fff;border-color:var(--p600);}
 
 /* CARD */
-.card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;box-shadow:var(--sh-sm);}
-.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;}
-.cname{font-family:'Prompt',sans-serif;font-weight:600;font-size:15px;color:var(--p800);}
-.csub{font-size:10px;color:var(--text3);margin-top:2px;}
-.ccon{font-size:11px;color:var(--p500);margin-top:2px;font-weight:500;}
-.bgs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:7px;}
-.bg{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;}
+.card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:9px;box-shadow:var(--sh-sm);}
+.ctop{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
+.cname{font-family:'Prompt',sans-serif;font-weight:600;font-size:14px;color:var(--p800);}
+.csub{font-size:10px;color:var(--text3);margin-top:1px;}
+.ccon{font-size:10px;color:var(--p500);margin-top:2px;font-weight:500;}
+.bgs{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:6px;}
+.bg{padding:2px 7px;border-radius:18px;font-size:10px;font-weight:700;}
 .bg-p{background:var(--amber-bg);color:var(--amber);}
 .bg-d{background:var(--green-bg);color:var(--green);}
 .bg-u{background:var(--red-bg);color:var(--red);}
 .bg-t{background:var(--p100);color:var(--p700);}
 .bg-up{background:var(--red-bg);color:var(--red);}
 .bg-pd{background:var(--green-bg);color:var(--green);}
+.bg-wait{background:#FFF8E0;color:#856400;}
+.bg-w{background:#E8F0FE;color:#1a56db;}
+.bg-i{background:#FFF3E0;color:#e65100;}
+.bg-r{background:#E8F5E9;color:#2e7d32;}
 .cdet{font-size:12px;color:var(--text2);margin-bottom:2px;line-height:1.5;}
 .cnote{font-size:11px;color:var(--text3);}
-.cprice{font-size:13px;font-weight:700;color:var(--text);margin-top:6px;display:flex;align-items:center;gap:8px;}
+.cprice{font-size:13px;font-weight:700;color:var(--text);margin-top:5px;display:flex;align-items:center;gap:6px;}
 .btn-ep{border:none;background:none;color:var(--text3);cursor:pointer;text-decoration:underline;font-size:10px;font-family:'Sarabun',sans-serif;}
-.photos-row{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap;}
-.photo-item{display:flex;flex-direction:column;align-items:center;gap:3px;}
+.photos-row{display:flex;gap:7px;margin-top:7px;flex-wrap:wrap;}
+.photo-item{display:flex;flex-direction:column;align-items:center;gap:2px;}
 .photo-item span{font-size:9px;color:var(--text3);font-weight:600;text-transform:uppercase;}
-.pthumb{width:72px;height:72px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border);cursor:pointer;transition:transform 0.2s;}
-.pthumb:hover{transform:scale(1.05);}
-.upload-done-btn{padding:5px 10px;font-size:11px;border:1.5px solid var(--p400);border-radius:8px;background:var(--p50);color:var(--p600);cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;}
-.div{border:none;border-top:1px solid var(--border);margin:10px 0;}
-.cact{display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
-.btn-s{padding:6px 12px;font-size:11px;border:1.5px solid var(--border);border-radius:8px;cursor:pointer;background:var(--p50);color:var(--text2);font-family:'Sarabun',sans-serif;font-weight:600;transition:all 0.18s;}
+.pthumb{width:64px;height:64px;object-fit:cover;border-radius:8px;border:1.5px solid var(--border);cursor:pointer;}
+.divider{border:none;border-top:1px solid var(--border);margin:8px 0;}
+.cact{display:flex;gap:5px;flex-wrap:wrap;align-items:center;}
+.btn-s{padding:5px 11px;font-size:11px;border:1.5px solid var(--border);border-radius:7px;cursor:pointer;background:var(--p50);color:var(--text2);font-family:'Sarabun',sans-serif;font-weight:600;transition:all 0.15s;}
 .btn-s:hover{background:var(--p100);}
 .btn-done{background:var(--green-bg);color:var(--green);border-color:var(--green-b);}
 .btn-pay{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-b);}
-.btn-del{color:var(--text3);margin-left:auto;background:transparent;border-color:transparent;}
+.btn-del{color:var(--text3);background:transparent;border-color:transparent;margin-left:auto;}
 .btn-del:hover{color:var(--red);background:var(--red-bg);}
+.upload-btn{padding:5px 10px;font-size:11px;border:1.5px solid var(--p400);border-radius:7px;background:var(--p50);color:var(--p600);cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;}
+.link-copy-box{background:var(--p50);border:1.5px solid var(--p200);border-radius:9px;padding:8px 11px;margin-top:7px;display:flex;align-items:center;gap:8px;}
+.link-url{font-size:11px;color:var(--p600);word-break:break-all;font-weight:500;flex:1;}
+.btn-copy{padding:4px 9px;font-size:11px;background:var(--p600);color:#fff;border:none;border-radius:6px;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:600;white-space:nowrap;}
+.pay-wait-box{margin-top:6px;padding:7px 10px;background:#FFF8E0;border-radius:8px;border:1px solid #F0C860;font-size:11px;color:#856400;font-weight:700;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.btn-confirm{padding:4px 10px;font-size:11px;background:var(--green-bg);color:var(--green);border:1.5px solid var(--green-b);border-radius:7px;cursor:pointer;font-family:'Sarabun',sans-serif;font-weight:700;}
+.hanger-warn{background:#FFF3E0;border:1px solid #FFB74D;border-radius:8px;padding:7px 10px;font-size:11px;color:#E65100;margin-top:6px;font-weight:600;}
 
-/* TRACK */
-.tbox{background:var(--white);border-radius:16px;padding:14px;border:1px solid var(--border);box-shadow:var(--sh-sm);margin-bottom:12px;}
-.tsearch{display:flex;gap:8px;}
-.tsearch input{flex:1;padding:10px 13px;font-size:13px;border:1.5px solid var(--border);border-radius:10px;font-family:'Sarabun',sans-serif;background:var(--p50);color:var(--text);transition:all 0.2s;}
-.tsearch input:focus{outline:none;border-color:var(--p400);box-shadow:0 0 0 3px rgba(91,45,158,0.1);}
-.tsearch button{padding:10px 16px;font-size:13px;background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;border-radius:10px;cursor:pointer;font-family:'Prompt',sans-serif;font-weight:700;}
-.link-box{background:var(--p50);border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:12px;font-size:12px;color:var(--p700);}
-.link-box strong{display:block;margin-bottom:4px;color:var(--p800);}
-.link-url{font-size:11px;color:var(--p500);word-break:break-all;font-weight:500;}
+/* STATUS STEPS */
+.steps{display:flex;align-items:center;margin:8px 0;gap:0;}
+.step{flex:1;text-align:center;font-size:9px;font-weight:600;color:var(--text3);position:relative;}
+.step-dot{width:20px;height:20px;border-radius:50%;background:var(--border);margin:0 auto 3px;display:flex;align-items:center;justify-content:center;font-size:10px;}
+.step.done .step-dot{background:var(--p600);color:#fff;}
+.step.active .step-dot{background:var(--p400);color:#fff;box-shadow:0 0 0 3px var(--p100);}
+.step-line{height:2px;background:var(--border);flex:1;margin-top:-13px;}
+.step-line.done{background:var(--p400);}
 
-/* SHOP INFO */
-.ic{background:var(--white);border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:10px;box-shadow:var(--sh-sm);}
-.ih{background:linear-gradient(135deg,var(--p800),var(--p600));padding:11px 14px;font-family:'Prompt',sans-serif;font-size:12px;color:#fff;font-weight:600;letter-spacing:0.04em;}
+/* SHOP */
+.ic{background:var(--white);border-radius:14px;border:1px solid var(--border);overflow:hidden;margin-bottom:9px;box-shadow:var(--sh-sm);}
+.ih{background:linear-gradient(135deg,var(--p800),var(--p600));padding:10px 14px;font-family:'Prompt',sans-serif;font-size:12px;color:#fff;font-weight:600;}
 .ib{padding:2px 0;}
-.ir{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border);}
+.ir{display:flex;align-items:center;gap:9px;padding:10px 14px;border-bottom:1px solid var(--border);}
 .ir:last-child{border-bottom:none;}
-.ii{width:34px;height:34px;background:var(--p50);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;border:1px solid var(--border);}
-.il{font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;letter-spacing:0.05em;}
+.ii{width:32px;height:32px;background:var(--p50);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.il{font-size:9px;color:var(--text3);font-weight:700;text-transform:uppercase;}
 .iv{font-size:13px;color:var(--text);font-weight:700;margin-top:1px;}
-.is{font-size:10px;color:var(--text3);margin-top:1px;}
-.btn-map{display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 28px);margin:4px 14px 12px;padding:11px;background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;border-radius:11px;font-size:13px;font-weight:700;font-family:'Prompt',sans-serif;cursor:pointer;text-decoration:none;box-shadow:0 3px 10px rgba(91,45,158,0.3);}
-.qr-w{display:flex;justify-content:center;padding:6px 14px 14px;}
-.qr-img{width:160px;height:160px;object-fit:contain;border-radius:12px;border:1.5px solid var(--border);}
+.is{font-size:10px;color:var(--text3);}
+.btn-map{display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 28px);margin:4px 14px 12px;padding:10px;background:linear-gradient(135deg,var(--p700),var(--p500));color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:700;font-family:'Prompt',sans-serif;cursor:pointer;text-decoration:none;}
+
+/* SUMMARY */
+.sum-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px;}
+.sum-card{background:var(--white);border-radius:12px;padding:14px 12px;border:1px solid var(--border);box-shadow:var(--sh-sm);}
+.sum-n{font-family:'Prompt',sans-serif;font-size:22px;font-weight:700;color:var(--p600);}
+.sum-l{font-size:11px;color:var(--text3);margin-top:2px;}
+
+/* CUSTOMER */
+.cv-head{background:linear-gradient(135deg,var(--p900),var(--p600));padding:24px 20px 18px;text-align:center;}
+.cv-head img{width:72px;height:72px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);object-fit:cover;margin-bottom:8px;}
+.cv-head h1{font-family:'Prompt',sans-serif;color:#fff;font-size:17px;font-weight:700;}
+.cv-head p{color:rgba(255,255,255,0.65);font-size:10px;margin-top:2px;letter-spacing:0.05em;}
+.cv-body{padding:14px;max-width:600px;margin:0 auto;}
+.cv-welcome{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:12px 14px;margin-bottom:12px;}
+.cv-name{font-family:'Prompt',sans-serif;font-size:16px;font-weight:700;color:var(--p800);}
+.cv-type{font-size:11px;color:var(--text3);margin-top:2px;}
+.cv-contact{background:var(--white);border-radius:12px;border:1px solid var(--border);padding:12px 14px;text-align:center;margin-top:12px;font-size:12px;color:var(--text2);}
+.ready-box{margin-top:7px;padding:8px 11px;background:var(--green-bg);border-radius:8px;border:1px solid var(--green-b);font-size:11px;color:var(--green);font-weight:700;}
+
+/* MODAL */
+.modal-bg{position:fixed;inset:0;background:rgba(30,10,60,0.6);z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;}
+.modal{background:var(--white);border-radius:18px;padding:22px;width:100%;max-width:360px;}
+.modal h3{font-family:'Prompt',sans-serif;font-size:15px;font-weight:700;color:var(--p800);margin-bottom:14px;text-align:center;}
+.modal-bank{background:var(--p50);border-radius:10px;padding:12px 14px;margin-bottom:12px;text-align:center;}
+.modal-bank .amount{font-family:'Prompt',sans-serif;font-size:24px;font-weight:700;color:var(--p700);margin-bottom:6px;}
+.modal-bank .bank-info{font-size:13px;color:var(--text2);line-height:1.6;}
+.modal-bank .bank-no{font-size:16px;font-weight:700;color:var(--text);letter-spacing:0.05em;}
+.pay-btns{display:flex;flex-direction:column;gap:7px;}
+.btn-slip{width:100%;padding:11px;background:var(--p50);color:var(--p600);border:1.5px solid var(--p400);border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;}
+.btn-cash{width:100%;padding:11px;background:var(--amber-bg);color:var(--amber);border:1.5px solid var(--amber-b);border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Sarabun',sans-serif;}
+.btn-close-m{width:100%;padding:9px;background:transparent;color:var(--text3);border:1.5px solid var(--border);border-radius:9px;font-size:12px;cursor:pointer;font-family:'Sarabun',sans-serif;margin-top:4px;}
+
+/* PHOTO */
+.parea{display:flex;align-items:center;gap:10px;}
+.pbox{width:68px;height:68px;background:var(--p50);border-radius:11px;border:2px dashed var(--p400);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;overflow:hidden;font-size:22px;color:var(--p400);}
+.pbox img{width:100%;height:100%;object-fit:cover;}
 
 /* TOAST */
-.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:10px 20px;border-radius:10px;font-size:13px;font-weight:600;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:'Sarabun',sans-serif;box-shadow:0 4px 14px rgba(0,0,0,0.12);}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);padding:9px 18px;border-radius:9px;font-size:12px;font-weight:600;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:9999;white-space:nowrap;font-family:'Sarabun',sans-serif;}
 .toast.ok{background:var(--green-bg);color:var(--green);border:1.5px solid var(--green-b);}
 .toast.err{background:var(--red-bg);color:var(--red);border:1.5px solid var(--red-b);}
 .toast.show{opacity:1;}
+.empty{text-align:center;padding:2rem 1rem;color:var(--text3);}
+.ei{font-size:32px;margin-bottom:5px;}
+.loading{text-align:center;padding:1.5rem;color:var(--text3);font-size:12px;}
 
-.empty{text-align:center;padding:2.5rem 1rem;color:var(--text3);}
-.ei{font-size:36px;margin-bottom:6px;}
-.loading{text-align:center;padding:2rem;color:var(--text3);font-size:13px;}
-.ready-box{margin-top:8px;padding:9px 12px;background:var(--green-bg);border-radius:9px;border:1px solid var(--green-b);font-size:12px;color:var(--green);font-weight:700;}
-
-/* CUSTOMER VIEW */
-.cv-head{background:linear-gradient(135deg,var(--p900),var(--p600));padding:28px 20px 20px;text-align:center;}
-.cv-head img{width:80px;height:80px;border-radius:50%;border:3px solid rgba(255,255,255,0.3);object-fit:cover;margin-bottom:10px;}
-.cv-head h1{font-family:'Prompt',sans-serif;color:#fff;font-size:18px;font-weight:700;}
-.cv-head p{color:rgba(255,255,255,0.65);font-size:11px;margin-top:3px;letter-spacing:0.05em;}
-.cv-body{padding:14px;max-width:600px;margin:0 auto;}
-.cv-contact{background:var(--white);border-radius:14px;border:1px solid var(--border);padding:12px 14px;text-align:center;margin-top:12px;font-size:13px;color:var(--text2);}
+/* CUSTOMER MANAGE */
+.cust-card{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:8px;box-shadow:var(--sh-sm);display:flex;align-items:center;justify-content:space-between;gap:10px;}
+.cust-info .cn{font-family:'Prompt',sans-serif;font-size:13px;font-weight:600;color:var(--p800);}
+.cust-info .cp{font-size:11px;color:var(--text3);margin-top:1px;}
+.cust-type{padding:2px 8px;border-radius:18px;font-size:10px;font-weight:700;}
+.type-daily{background:var(--p100);color:var(--p700);}
+.type-monthly{background:var(--green-bg);color:var(--green);}
 </style>
 </head>
 <body>
 <div id="root"></div>
 <div id="toast" class="toast"></div>
+<div id="modal"></div>
 
 <script>
-const API='https://script.google.com/macros/s/AKfycbxlAtGx1XIIXZQfYC2800WshR0tu3bosCzXlFnfjuULPLUg1ycMqKGTBEW1Kek-C7Y_/exec';
+const API='https://script.google.com/macros/s/AKfycbzew1e-tG2WmaFa1yq1cXIJ-o_PlEbeAPIbcIeX_SVjtcV_F_IeYXFjH5UOHxnDSbbo/exec';
 const LOGO='https://raw.githubusercontent.com/Peachylochy/laundry/main/Apinyalaundry_logo.png';
-const QR='https://raw.githubusercontent.com/Peachylochy/laundry/main/qr_payment.jpg';
-const WASH={wash_normal:'ซักรีดธรรมดา',wash_dry:'ซักแห้ง',wash_hand:'ซักมือ'};
-const DELIVERY={pickup:'รับเองที่ร้าน',office:'ส่งให้ลูกค้า'};
+const SITE='https://peachylochy.github.io/laundry';
+const WASH_LABEL={wash_iron:'ซักรีด',wash_dry:'ซักแห้ง',wash_hand:'ซักมือ',iron_only:'รีดอย่างเดียว'};
+const DELIVERY_LABEL={self:'รับเองที่ร้าน',mpu:'ม.พะเยา',outside:'นอกพื้นที่'};
+const URGENT_LABEL={normal:'ปกติ',urgent3:'ด่วน 3 วัน (+฿20)',urgent24:'ด่วน 24ชม (+฿40)'};
+const STATUS_STEPS=['pending','washing','ironing','ready'];
+const STATUS_TH={pending:'รับผ้าแล้ว',washing:'กำลังซัก',ironing:'กำลังรีด',ready:'เสร็จพร้อมส่ง',done:'เสร็จแล้ว'};
 
-let orders=[],filter='all',photoData=null,sel={wash:'wash_normal',urgent:'false',delivery:'pickup'};
-const params=new URLSearchParams(window.location.search);
-const isCustomer=params.get('view')==='customer';
-const customerName=params.get('name')||'';
+let orders=[],customers=[],filter='all',photoData=null;
+let sel={wash:'wash_iron',urgent:'normal',delivery:'self',delivery_time:'',hanger:'false',type:'daily'};
+const urlP=new URLSearchParams(window.location.search);
+const isCustomer=urlP.get('view')==='customer';
+const custId=urlP.get('id')||'';
+const custPhone=urlP.get('phone')||'';
 
-// ---- TOAST ----
 function toast(msg,type='ok'){
   const el=document.getElementById('toast');
   el.textContent=msg;el.className='toast '+type+' show';
   setTimeout(()=>el.classList.remove('show'),3000);
 }
+async function apiGet(p){const r=await fetch(API+'?'+new URLSearchParams(p).toString());return r.json();}
+async function apiPost(p){const r=await fetch(API,{method:'POST',body:JSON.stringify(p)});return r.json();}
 
-// ---- API ----
-async function apiGet(p){
-  const r=await fetch(API+'?'+new URLSearchParams(p).toString());
-  return r.json();
-}
-async function apiPost(p){
-  const r=await fetch(API,{method:'POST',body:JSON.stringify(p)});
-  return r.json();
+function isOpen(){
+  const now=new Date();const h=now.getHours();const m=now.getMinutes();
+  const t=h*60+m;return t>=480&&t<=1170;
 }
 
-// ---- INIT ----
-if(isCustomer){
-  renderCustomer();
-} else {
-  const saved=sessionStorage.getItem('al_auth');
-  if(saved==='1') renderAdmin();
-  else renderLogin();
-}
+// INIT
+if(isCustomer){initCustomer();}
+else{const s=sessionStorage.getItem('al_auth');if(s==='1')renderAdmin();else renderAdminLogin();}
 
-// ---- LOGIN ----
-function renderLogin(){
+// ---- ADMIN LOGIN ----
+function renderAdminLogin(){
   document.getElementById('root').innerHTML=`
-    <div class="login-wrap">
-      <div class="login-box">
-        <img src="${LOGO}" class="login-logo" onerror="this.style.display='none'" />
-        <div class="login-title">อภิญญา ซัก อบ รีด</div>
-        <div class="login-sub">Apinya Laundry · Admin</div>
-        <input type="password" class="login-input" id="pw" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')doLogin()" />
-        <button class="login-btn" onclick="doLogin()">เข้าสู่ระบบ</button>
-        <div class="login-err" id="lerr"></div>
-      </div>
-    </div>`;
+  <div class="wrap"><div class="box">
+    <img src="${LOGO}" class="box-logo" onerror="this.style.display='none'"/>
+    <div class="box-title">อภิญญา ซัก อบ รีด</div>
+    <div class="box-sub">Admin Login</div>
+    <input type="password" class="inp" id="pw" placeholder="รหัสผ่าน" onkeydown="if(event.key==='Enter')doAdminLogin()"/>
+    <button class="btn-main" onclick="doAdminLogin()">เข้าสู่ระบบ Admin</button>
+    <div class="err-text" id="lerr"></div>
+  </div></div>`;
 }
-async function doLogin(){
+async function doAdminLogin(){
   const pw=document.getElementById('pw').value;
-  const data=await apiGet({action:'login',password:pw});
-  if(data.success){
-    sessionStorage.setItem('al_auth','1');
-    renderAdmin();
-  } else {
-    document.getElementById('lerr').textContent=data.error||'รหัสผ่านไม่ถูกต้อง';
-  }
+  const d=await apiGet({action:'login',password:pw});
+  if(d.success){sessionStorage.setItem('al_auth','1');renderAdmin();}
+  else document.getElementById('lerr').textContent=d.error||'รหัสผ่านไม่ถูกต้อง';
+}
+function logout(){sessionStorage.removeItem('al_auth');renderAdminLogin();}
+
+// ---- CUSTOMER LOGIN ----
+async function initCustomer(){
+  if(custId){renderCustomerView(null,custId);}
+  else if(custPhone){
+    const d=await apiGet({action:'customerLogin',phone:custPhone});
+    if(d.success)renderCustomerView(d.customer);
+    else renderCustomerLogin(custPhone);
+  } else {renderCustomerLogin();}
+}
+function renderCustomerLogin(prefill=''){
+  document.getElementById('root').innerHTML=`
+  <div class="wrap"><div class="box">
+    <img src="${LOGO}" class="box-logo" onerror="this.style.display='none'"/>
+    <div class="box-title">อภิญญา ซัก อบ รีด</div>
+    <div class="box-sub">กรอกเบอร์โทรเพื่อดูสถานะผ้าค่ะ</div>
+    <input type="tel" class="inp" id="cphone" placeholder="เบอร์โทรศัพท์" value="${prefill}" onkeydown="if(event.key==='Enter')doCustomerLogin()"/>
+    <button class="btn-main" onclick="doCustomerLogin()">ดูสถานะผ้าของฉัน</button>
+    <div class="err-text" id="cerr"></div>
+    <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--text3);">
+      📞 ติดต่อร้าน: <strong style="color:var(--p700)">064-253-7741</strong>
+    </div>
+  </div></div>`;
+}
+async function doCustomerLogin(){
+  const phone=document.getElementById('cphone').value.trim();
+  if(!phone){document.getElementById('cerr').textContent='กรุณากรอกเบอร์โทรค่ะ';return;}
+  const d=await apiGet({action:'customerLogin',phone});
+  if(d.success)renderCustomerView(d.customer);
+  else document.getElementById('cerr').textContent=d.error||'ไม่พบเบอร์นี้ในระบบค่ะ';
+}
+
+// ---- CUSTOMER VIEW ----
+async function renderCustomerView(customer, orderId=''){
+  const open=isOpen();
+  document.getElementById('root').innerHTML=`
+  <div class="cv-head">
+    <img src="${LOGO}" onerror="this.style.display='none'"/>
+    <h1>อภิญญา ซัก อบ รีด</h1>
+    <p>APINYA LAUNDRY · ${open?'🟢 เปิดให้บริการ':'🔴 ปิดให้บริการ'}</p>
+  </div>
+  <div class="cv-body">
+    ${customer?`<div class="cv-welcome">
+      <div class="cv-name">สวัสดีค่ะ คุณ${customer.nickname||customer.name} 👋</div>
+      <div class="cv-type">${customer.type==='monthly'?'ลูกค้ารายเดือน 🌟':'ลูกค้ารายวัน'} ${customer.source?'· '+customer.source:''}</div>
+    </div>`:''}
+    <div id="cv-orders"><div class="loading">กำลังโหลด...</div></div>
+    <div class="cv-contact">
+      📞 <strong>064-253-7741</strong> &nbsp;|&nbsp; Line: <strong>peach41</strong><br/>
+      <span style="font-size:10px;color:var(--text3);">เวลาทำการ 08:00 – 19:30 น.</span><br/>
+      <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" style="font-size:11px;color:var(--p600);font-weight:600;">📍 ดูแผนที่ร้าน</a>
+    </div>
+  </div>`;
+  const phone=customer?.phone||custPhone;
+  const d=await apiGet({action:'listOrders'});
+  const all=d.orders||[];
+  let myOrders=orderId?all.filter(o=>o.id===orderId):all.filter(o=>String(o.phone)===String(phone));
+  const el=document.getElementById('cv-orders');
+  if(!myOrders.length){el.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ยังไม่มีรายการผ้าค่ะ</p></div>';return;}
+  el.innerHTML=myOrders.map(o=>customerCardHTML(o)).join('');
+}
+
+function customerCardHTML(o){
+  const pin=o.photo_in&&String(o.photo_in).startsWith('http');
+  const pdone=o.photo_done&&String(o.photo_done).startsWith('http');
+  const pslip=o.slip_photo&&String(o.slip_photo).startsWith('http');
+  const payWait=o.payment_method&&String(o.paid)!=='true';
+  const stepIdx=STATUS_STEPS.indexOf(o.status);
+  const hanger=String(o.hanger)==='true';
+  return`<div class="card">
+    <div class="ctop">
+      <div>
+        <div class="cname">${o.owner||o.nickname||''}</div>
+        <div class="csub">${o.id} · ${fmtDate(o.created_at)}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
+        <span class="bg ${o.status==='ready'||o.status==='done'?'bg-d':'bg-p'}">${STATUS_TH[o.status]||o.status}</span>
+        ${String(o.urgent)==='urgent24'||String(o.urgent)==='urgent3'?'<span class="bg bg-u">ด่วน</span>':''}
+      </div>
+    </div>
+    ${o.status!=='done'?`<div class="steps">
+      ${STATUS_STEPS.map((s,i)=>`
+        ${i>0?`<div class="step-line ${i<=stepIdx?'done':''}"></div>`:''}
+        <div class="step ${i<stepIdx?'done':i===stepIdx?'active':''}">
+          <div class="step-dot">${i<stepIdx?'✓':i===stepIdx?'●':''}</div>
+          <div>${['รับผ้า','ซัก','รีด','พร้อมส่ง'][i]}</div>
+        </div>`).join('')}
+    </div>`:''}
+    <div class="bgs">
+      <span class="bg bg-t">${WASH_LABEL[o.wash_type]||o.wash_type}</span>
+      <span class="bg bg-t">${DELIVERY_LABEL[o.delivery]||o.delivery}</span>
+      ${String(o.urgent)!=='normal'?`<span class="bg bg-u">${URGENT_LABEL[o.urgent]||''}</span>`:''}
+    </div>
+    <div class="cdet">${o.desc}</div>
+    ${o.note?`<div class="cnote">📝 ${o.note}</div>`:''}
+    ${hanger?`<div class="hanger-warn">🪝 กรุณาเตรียมไม้แขวนมารับผ้าด้วยนะคะ</div>`:''}
+    ${pin||pdone?`<div class="photos-row">
+      ${pin?`<div class="photo-item"><span>ก่อนซัก</span><a href="${o.photo_in}" target="_blank"><img src="${o.photo_in}" class="pthumb"/></a></div>`:''}
+      ${pdone?`<div class="photo-item"><span>หลังซัก</span><a href="${o.photo_done}" target="_blank"><img src="${o.photo_done}" class="pthumb"/></a></div>`:''}
+    </div>`:''}
+    <div style="font-size:12px;font-weight:700;color:var(--text);margin-top:6px;">
+      ยอดชำระ: ฿${o.price||0}
+      ${String(o.paid)==='true'?'<span style="color:var(--green);margin-left:6px;">✓ ชำระแล้ว</span>':''}
+    </div>
+    ${(o.status==='ready'||o.status==='done')&&String(o.paid)!=='true'&&!o.payment_method?`
+    <button class="btn-purple" style="margin-top:8px;padding:10px;" onclick="showPayModal('${o.id}','${o.price||0}')">💳 ชำระเงิน</button>`:''}
+    ${payWait?`<div class="pay-wait-box">⏳ แจ้งชำระแล้ว รอร้านยืนยันค่ะ</div>`:''}
+    ${(o.status==='ready'||o.status==='done')&&String(o.paid)==='true'?`<div class="ready-box">✅ ชำระเงินเรียบร้อยแล้วค่ะ ขอบคุณมากนะคะ 🙏</div>`:''}
+  </div>`;
 }
 
 // ---- ADMIN ----
 function renderAdmin(){
   document.getElementById('root').innerHTML=`
-    <div class="header">
-      <div class="logo-ring"><img src="${LOGO}" onerror="this.parentElement.style.background='var(--p500)';this.style.display='none'"/></div>
-      <div class="htext"><h1>อภิญญา ซัก อบ รีด</h1><p>Apinya Laundry · Admin</p></div>
-      <div class="hbadge">064-253-7741</div>
-      <button class="hlogout" onclick="logout()">ออก</button>
+  <div class="header">
+    <div class="logo-ring"><img src="${LOGO}" onerror="this.parentElement.style.background='var(--p500)';this.style.display='none'"/></div>
+    <div class="htext"><h1>อภิญญา ซัก อบ รีด</h1><p>Apinya Laundry · Admin</p></div>
+    <div class="hright">
+      <span class="${isOpen()?'status-open':'status-closed'}">${isOpen()?'เปิด':'ปิด'}</span>
+      <span class="hbadge">064-253-7741</span>
+      <button class="hbtn" onclick="logout()">ออก</button>
     </div>
-    <div class="tabs">
-      <button class="tab active" onclick="sw('add')">+ รับผ้า</button>
-      <button class="tab" onclick="sw('list')">รายการ</button>
-      <button class="tab" onclick="sw('track')">สถานะ</button>
-      <button class="tab" onclick="sw('shop')">ร้านค้า</button>
-    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active" onclick="sw('add')">+ รับผ้า</button>
+    <button class="tab" onclick="sw('list')">รายการ</button>
+    <button class="tab" onclick="sw('customers')">ลูกค้า</button>
+    <button class="tab" onclick="sw('summary')">สรุปยอด</button>
+    <button class="tab" onclick="sw('shop')">ร้าน</button>
+  </div>
 
-    <!-- ADD -->
-    <div id="tab-add" class="section active">
-      <div class="sh"><div class="sh-bar"></div><h2>บันทึกรับผ้าใหม่</h2></div>
-      <div class="fc">
-        <div class="fc-t">ข้อมูลลูกค้า</div>
-        <div class="fg">
-          <div class="f"><label>ชื่อลูกค้า *</label><input id="owner" placeholder="เช่น พี่นิด"/></div>
-          <div class="f"><label>จากที่ไหน</label><input id="source" placeholder="เช่น ออฟฟิศ"/></div>
-          <div class="f"><label>เบอร์โทร</label><input id="phone" type="tel" placeholder="081-xxx-xxxx"/></div>
-          <div class="f"><label>Line ID</label><input id="lineid" placeholder="@line_id"/></div>
+  <!-- ADD ORDER -->
+  <div id="tab-add" class="section active">
+    <div class="sh"><div class="sh-bar"></div><h2>บันทึกรับผ้าใหม่</h2></div>
+    <div class="fc"><div class="fc-t">ค้นหาลูกค้า</div>
+      <div class="fg">
+        <div class="f ff"><label>เบอร์โทรลูกค้า</label>
+          <div style="display:flex;gap:7px;">
+            <input id="search-phone" type="tel" placeholder="กรอกเบอร์แล้วกด Enter" style="flex:1;" onkeydown="if(event.key==='Enter')searchCustomer()"/>
+            <button class="btn-s" onclick="searchCustomer()" style="padding:8px 12px;font-size:12px;">ค้นหา</button>
+          </div>
         </div>
       </div>
-      <div class="fc">
-        <div class="fc-t">รายละเอียดผ้า</div>
-        <div class="fg">
-          <div class="f"><label>วันที่รับผ้า</label><input id="pickup-date" type="date"/></div>
-          <div class="f ff"><label>รายละเอียด *</label><input id="desc" placeholder="เช่น เสื้อเชิ้ต 3 ตัว กางเกง 1 ตัว"/></div>
-          <div class="f ff"><label>ประเภทการซัก</label>
-            <div class="rg" id="rg-wash">
-              <span class="rb on" onclick="pick('rg-wash',this,'wash_normal')">ซักรีดธรรมดา</span>
-              <span class="rb" onclick="pick('rg-wash',this,'wash_dry')">ซักแห้ง</span>
-              <span class="rb" onclick="pick('rg-wash',this,'wash_hand')">ซักมือ</span>
-            </div>
+      <div id="customer-found" style="display:none;margin-top:10px;padding:10px;background:var(--green-bg);border-radius:9px;border:1px solid var(--green-b);">
+        <div style="font-size:12px;font-weight:700;color:var(--green);" id="customer-found-text"></div>
+      </div>
+      <div id="customer-notfound" style="display:none;margin-top:10px;padding:10px;background:var(--amber-bg);border-radius:9px;border:1px solid var(--amber-b);">
+        <div style="font-size:11px;color:var(--amber);font-weight:600;">ไม่พบลูกค้านี้ในระบบ — <button class="btn-ep" onclick="sw('customers')" style="color:var(--p600);">เพิ่มลูกค้าใหม่</button></div>
+      </div>
+    </div>
+    <div class="fc"><div class="fc-t">รายละเอียดผ้า</div>
+      <div class="fg">
+        <div class="f"><label>วันที่รับผ้า</label><input id="pickup-date" type="date"/></div>
+        <div class="f"><label>ประเภทลูกค้า</label>
+          <select id="cust-type">
+            <option value="daily">รายวัน</option>
+            <option value="monthly">รายเดือน</option>
+          </select>
+        </div>
+        <div class="f ff"><label>รายละเอียดผ้า *</label><input id="desc" placeholder="เช่น เสื้อเชิ้ต 3 ตัว กางเกง 1 ตัว"/></div>
+        <div class="f ff"><label>ประเภทการซัก</label>
+          <div class="rg" id="rg-wash">
+            <span class="rb on" onclick="pick('rg-wash',this,'wash_iron')">ซักรีด</span>
+            <span class="rb" onclick="pick('rg-wash',this,'iron_only')">รีดอย่างเดียว</span>
+            <span class="rb" onclick="pick('rg-wash',this,'wash_dry')">ซักแห้ง</span>
+            <span class="rb" onclick="pick('rg-wash',this,'wash_hand')">ซักมือ</span>
           </div>
-          <div class="f ff"><label>ความเร่งด่วน</label>
-            <div class="rg" id="rg-urgent">
-              <span class="rb on" onclick="pick('rg-urgent',this,'false')">ปกติ</span>
-              <span class="rb" onclick="pick('rg-urgent',this,'true')">🔴 ด่วน</span>
-            </div>
+        </div>
+        <div class="f ff"><label>ความเร่งด่วน</label>
+          <div class="rg" id="rg-urgent">
+            <span class="rb on" onclick="pick('rg-urgent',this,'normal')">ปกติ (ฟรี)</span>
+            <span class="rb" onclick="pick('rg-urgent',this,'urgent3')">ด่วน 3 วัน (+฿20)</span>
+            <span class="rb" onclick="pick('rg-urgent',this,'urgent24')">ด่วน 24ชม (+฿40)</span>
           </div>
-          <div class="f ff"><label>การรับผ้าคืน</label>
-            <div class="rg" id="rg-delivery">
-              <span class="rb on" onclick="pick('rg-delivery',this,'pickup')">รับเองที่ร้าน</span>
-              <span class="rb" onclick="pick('rg-delivery',this,'office')">ส่งให้ลูกค้า</span>
-            </div>
+        </div>
+        <div class="f ff"><label>การจัดส่ง</label>
+          <div class="rg" id="rg-delivery">
+            <span class="rb on" onclick="pick('rg-delivery',this,'self')">รับเองที่ร้าน (ฟรี)</span>
+            <span class="rb" onclick="pick('rg-delivery',this,'mpu')">ม.พะเยา (ฟรี)</span>
+            <span class="rb" onclick="pick('rg-delivery',this,'outside')">นอกพื้นที่ (+฿20)</span>
           </div>
-          <div class="f ff"><label>รูปผ้า (ก่อนซัก)</label>
-            <div class="parea">
-              <div class="pbox" id="photo-preview" onclick="document.getElementById('photo-input').click()">📷</div>
-              <div>
-                <p style="font-size:12px;color:var(--text2);margin-bottom:3px;" id="photo-name">ยังไม่ได้เลือกรูป</p>
-                <p style="font-size:10px;color:var(--text3);">อัปโหลดไป Google Drive อัตโนมัติค่ะ</p>
-                <div style="display:flex;gap:5px;margin-top:7px;">
-                  <button class="btn-s" onclick="document.getElementById('photo-input').click()">เลือกรูป</button>
-                  <button class="btn-s" id="btn-rp" style="display:none;" onclick="clearPhoto()">ลบรูป</button>
-                </div>
+        </div>
+        <div class="f ff" id="delivery-time-wrap" style="display:none;"><label>รอบส่ง ม.พะเยา</label>
+          <div class="rg" id="rg-dtime">
+            <span class="rb on" onclick="pickTime(this,'morning')">ช่วงเช้า</span>
+            <span class="rb" onclick="pickTime(this,'evening')">ช่วงเย็น</span>
+          </div>
+        </div>
+        <div class="f ff"><label>รูปแบบการส่งคืน</label>
+          <div class="rg" id="rg-hanger">
+            <span class="rb on" onclick="pick('rg-hanger',this,'false')">พับใส่ถุง</span>
+            <span class="rb" onclick="pick('rg-hanger',this,'true')">ใส่ไม้แขวน</span>
+          </div>
+        </div>
+        <div class="f ff"><label>รูปผ้าก่อนซัก</label>
+          <div class="parea">
+            <div class="pbox" id="photo-preview" onclick="document.getElementById('photo-input').click()">📷</div>
+            <div>
+              <p style="font-size:11px;color:var(--text2);margin-bottom:3px;" id="photo-name">ยังไม่ได้เลือกรูป</p>
+              <div style="display:flex;gap:5px;margin-top:5px;">
+                <button class="btn-s" onclick="document.getElementById('photo-input').click()">เลือกรูป</button>
+                <button class="btn-s" id="btn-rp" style="display:none;" onclick="clearPhoto()">ลบรูป</button>
               </div>
-              <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this)"/>
             </div>
+            <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this)"/>
           </div>
-          <div class="f ff"><label>หมายเหตุ</label><textarea id="note" placeholder="เช่น ระวังผ้าสี, อย่าอบ"></textarea></div>
         </div>
+        <div class="f ff"><label>หมายเหตุ / ตำหนิผ้า</label><textarea id="note" placeholder="เช่น มีรอยเปื้อน, ผ้าสี, อย่าอบ"></textarea></div>
       </div>
-      <button class="btn-main" id="btn-add" onclick="addOrder()">✓ บันทึกรายการผ้า</button>
+      <div class="price-box" id="price-preview">
+        <div class="price-breakdown">กรอกรายละเอียดเพื่อดูราคา</div>
+      </div>
     </div>
+    <button class="btn-purple" id="btn-add" onclick="addOrder()">✓ บันทึกรายการผ้า</button>
+    <div id="new-order-link" style="display:none;margin-top:10px;"></div>
+  </div>
 
-    <!-- LIST -->
-    <div id="tab-list" class="section">
-      <div class="stats">
-        <div class="stat"><div class="stat-n" id="st-total">—</div><div class="stat-l">ทั้งหมด</div></div>
-        <div class="stat"><div class="stat-n" id="st-pending">—</div><div class="stat-l">ยังไม่เสร็จ</div></div>
-        <div class="stat"><div class="stat-n" id="st-unpaid">—</div><div class="stat-l">ยังไม่เก็บเงิน</div></div>
-      </div>
-      <div class="chips">
-        <span class="chip on" onclick="setF('all',this)">ทั้งหมด</span>
-        <span class="chip" onclick="setF('pending',this)">ยังไม่เสร็จ</span>
-        <span class="chip" onclick="setF('done',this)">เสร็จแล้ว</span>
-        <span class="chip" onclick="setF('urgent',this)">ด่วน</span>
-        <span class="chip" onclick="setF('unpaid',this)">ยังไม่เก็บเงิน</span>
-      </div>
-      <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
-      <button class="btn-s" style="width:100%;text-align:center;padding:9px;margin-top:8px;" onclick="loadOrders()">↻ รีเฟรช</button>
+  <!-- LIST -->
+  <div id="tab-list" class="section">
+    <div class="stats">
+      <div class="stat"><div class="stat-n" id="st-total">—</div><div class="stat-l">ทั้งหมด</div></div>
+      <div class="stat"><div class="stat-n" id="st-pending">—</div><div class="stat-l">ยังไม่เสร็จ</div></div>
+      <div class="stat"><div class="stat-n" id="st-unpaid">—</div><div class="stat-l">ค้างชำระ</div></div>
     </div>
+    <div class="chips">
+      <span class="chip on" onclick="setF('all',this)">ทั้งหมด</span>
+      <span class="chip" onclick="setF('active',this)">กำลังดำเนินการ</span>
+      <span class="chip" onclick="setF('ready',this)">พร้อมส่ง</span>
+      <span class="chip" onclick="setF('urgent',this)">ด่วน</span>
+      <span class="chip" onclick="setF('pay-wait',this)">รอตรวจสอบเงิน</span>
+      <span class="chip" onclick="setF('unpaid',this)">ค้างชำระ</span>
+    </div>
+    <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
+    <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadOrders()">↻ รีเฟรช</button>
+  </div>
 
-    <!-- TRACK -->
-    <div id="tab-track" class="section">
-      <div class="sh"><div class="sh-bar"></div><h2>เช็คสถานะผ้า</h2></div>
-      <div class="link-box">
-        <strong>🔗 ลิงก์สำหรับลูกค้าเช็คสถานะ</strong>
-        <div class="link-url">peachylochy.github.io/laundry?view=customer</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:4px;">หรือส่งลิงก์เฉพาะบุคคล: ?view=customer&name=ชื่อ</div>
-      </div>
-      <div class="tbox">
-        <p style="font-size:12px;color:var(--text2);margin-bottom:8px;">ค้นหาสถานะผ้าด้วยชื่อ</p>
-        <div class="tsearch">
-          <input id="track-name" placeholder="พิมพ์ชื่อลูกค้า"/>
-          <button onclick="trackOrder()">ค้นหา</button>
+  <!-- CUSTOMERS -->
+  <div id="tab-customers" class="section">
+    <div class="sh"><div class="sh-bar"></div><h2>จัดการลูกค้า</h2></div>
+    <div class="fc"><div class="fc-t">เพิ่มลูกค้าใหม่</div>
+      <div class="fg">
+        <div class="f"><label>เบอร์โทร *</label><input id="nc-phone" type="tel" placeholder="0812345678"/></div>
+        <div class="f"><label>ชื่อ-นามสกุล *</label><input id="nc-name" placeholder="เช่น สมหญิง ใจดี"/></div>
+        <div class="f"><label>ชื่อเล่น</label><input id="nc-nick" placeholder="เช่น น้องนิด"/></div>
+        <div class="f"><label>จากที่ไหน</label><input id="nc-source" placeholder="เช่น ออฟฟิศ, ม.พะเยา"/></div>
+        <div class="f"><label>Line ID</label><input id="nc-line" placeholder="@line_id"/></div>
+        <div class="f"><label>ประเภท</label>
+          <div class="rg" id="rg-type">
+            <span class="rb on" onclick="pick('rg-type',this,'daily')">รายวัน</span>
+            <span class="rb" onclick="pick('rg-type',this,'monthly')">รายเดือน</span>
+          </div>
         </div>
       </div>
-      <div id="track-result"></div>
+      <button class="btn-purple" onclick="addCustomer()" style="margin-top:8px;">+ เพิ่มลูกค้า</button>
     </div>
+    <div class="sh" style="margin-top:8px;"><div class="sh-bar"></div><h2>รายชื่อลูกค้าทั้งหมด</h2></div>
+    <div id="customer-list"><div class="loading">กำลังโหลด...</div></div>
+    <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadCustomers()">↻ รีเฟรช</button>
+  </div>
 
-    <!-- SHOP -->
-    <div id="tab-shop" class="section">
-      <div class="sh"><div class="sh-bar"></div><h2>ข้อมูลร้าน</h2></div>
-      <div class="ic">
-        <div class="ih">📍 ติดต่อร้าน</div>
-        <div class="ib">
-          <div class="ir"><div class="ii">📞</div><div><div class="il">เบอร์โทรศัพท์</div><div class="iv">064-253-7741</div><div class="is">คุณอภิญญา</div></div></div>
-          <div class="ir"><div class="ii">🕐</div><div><div class="il">เวลาทำการ</div><div class="iv">08:00 – 19:30 น.</div><div class="is">มาก่อนหรือนอกเวลา กรุณาติดต่อทางร้านค่ะ</div></div></div>
-        </div>
-        <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" class="btn-map">📍 ดูแผนที่ Google Maps</a>
+  <!-- SUMMARY -->
+  <div id="tab-summary" class="section">
+    <div class="sh"><div class="sh-bar"></div><h2>สรุปยอดวันนี้</h2></div>
+    <div class="sum-grid" id="summary-grid"><div class="loading" style="grid-column:1/-1;">กำลังโหลด...</div></div>
+    <div class="sh"><div class="sh-bar"></div><h2>รายการค้างชำระ</h2></div>
+    <div id="unpaid-list"><div class="loading">กำลังโหลด...</div></div>
+    <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadSummary()">↻ รีเฟรช</button>
+  </div>
+
+  <!-- SHOP -->
+  <div id="tab-shop" class="section">
+    <div class="sh"><div class="sh-bar"></div><h2>ข้อมูลร้าน</h2></div>
+    <div class="ic"><div class="ih">📍 ติดต่อร้าน</div>
+      <div class="ib">
+        <div class="ir"><div class="ii">📞</div><div><div class="il">เบอร์โทร</div><div class="iv">064-253-7741</div></div></div>
+        <div class="ir"><div class="ii">💬</div><div><div class="il">Line ID</div><div class="iv">peach41</div></div></div>
+        <div class="ir"><div class="ii">🕐</div><div><div class="il">เวลาทำการ</div><div class="iv">08:00 – 19:30 น.</div></div></div>
       </div>
-      <div class="ic">
-        <div class="ih">💳 ช่องทางชำระเงิน</div>
-        <div class="ib">
-          <div class="ir"><div class="ii">🏦</div><div><div class="il">ธนาคารกสิกรไทย</div><div class="iv">068-1-09688-x</div><div class="is">นาง อภิญญา สูงขาว</div></div></div>
-          <div class="ir"><div class="ii">📱</div><div><div class="il">พร้อมเพย์</div><div class="iv">064-253-7741</div><div class="is">นาง อภิญญา สูงขาว</div></div></div>
-        </div>
-        <p style="text-align:center;font-size:11px;color:var(--text3);padding:4px 0 2px;">สแกน QR โอนเงินได้เลยค่ะ</p>
-        <div class="qr-w"><img src="${QR}" class="qr-img" onerror="this.parentElement.innerHTML='<p style=padding:12px;color:var(--text3);font-size:11px;text-align:center>อัปโหลด qr_payment.jpg ใน GitHub ค่ะ</p>'"/></div>
+      <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" class="btn-map">📍 ดูแผนที่ Google Maps</a>
+    </div>
+    <div class="ic"><div class="ih">💳 ช่องทางรับเงิน</div>
+      <div class="ib">
+        <div class="ir"><div class="ii">🏦</div><div><div class="il">ธนาคารกสิกรไทย</div><div class="iv">2161036679</div><div class="is">ธาราทิพย์ สูงขาว</div></div></div>
+        <div class="ir"><div class="ii">📱</div><div><div class="il">พร้อมเพย์ / PromptPay</div><div class="iv">064-253-7741</div></div></div>
       </div>
     </div>
-  `;
+    <div class="ic"><div class="ih">💰 ราคาบริการ</div>
+      <div class="ib">
+        <div class="ir"><div class="ii">👕</div><div><div class="il">รายชิ้น</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ซักรีด ฿10 · รีดอย่างเดียว ฿5<br/>ยีนส์ ฿10 · ชุดเดรส ฿15 · ผ้าขนหนู ฿10</div></div></div>
+        <div class="ir"><div class="ii">🧥</div><div><div class="il">ซักแห้ง</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ชุดข้าราชการ ฿120 · เสื้อกันหนาว/ผ้าไทย ฿100<br/>สูท ฿80</div></div></div>
+        <div class="ir"><div class="ii">🛏</div><div><div class="il">ชิ้นใหญ่</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ผ้านวม ฿60-100 · ชุดเครื่องนอน ฿100-200</div></div></div>
+        <div class="ir"><div class="ii">📅</div><div><div class="il">รายเดือน</div><div class="iv">฿800/เดือน</div><div class="is">ไม่จำกัดชิ้น (เฉพาะซักรีดปกติ)</div></div></div>
+        <div class="ir"><div class="ii">⚡</div><div><div class="il">ค่าด่วน</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ด่วน 3 วัน +฿20 · ด่วน 24ชม +฿40</div></div></div>
+        <div class="ir"><div class="ii">🚗</div><div><div class="il">ค่าส่ง</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">รับเอง/ม.พะเยา ฟรี · นอกพื้นที่ +฿20</div></div></div>
+      </div>
+    </div>
+  </div>`;
   document.getElementById('pickup-date').value=new Date().toISOString().split('T')[0];
-  loadOrders();
+  loadOrders();loadCustomers();
 }
 
-function logout(){
-  sessionStorage.removeItem('al_auth');
-  renderLogin();
+// ---- FORM LOGIC ----
+let currentCustomer=null;
+async function searchCustomer(){
+  const phone=document.getElementById('search-phone').value.trim();
+  if(!phone)return;
+  const d=await apiGet({action:'getCustomer',phone});
+  if(d.success){
+    currentCustomer=d.customer;
+    document.getElementById('customer-found').style.display='block';
+    document.getElementById('customer-notfound').style.display='none';
+    document.getElementById('customer-found-text').textContent=`✓ พบลูกค้า: ${d.customer.name} (${d.customer.nickname||''}) - ${d.customer.type==='monthly'?'รายเดือน':'รายวัน'}`;
+    document.getElementById('cust-type').value=d.customer.type||'daily';
+  } else {
+    currentCustomer=null;
+    document.getElementById('customer-found').style.display='none';
+    document.getElementById('customer-notfound').style.display='block';
+  }
 }
-
-// ---- CUSTOMER ----
-function renderCustomer(){
-  document.getElementById('root').innerHTML=`
-    <div class="cv-head">
-      <img src="${LOGO}" onerror="this.style.display='none'"/>
-      <h1>อภิญญา ซัก อบ รีด</h1>
-      <p>APINYA LAUNDRY · เช็คสถานะผ้าของคุณ</p>
-    </div>
-    <div class="cv-body">
-      <div class="tbox" style="margin-top:0;">
-        <p style="font-size:13px;color:var(--text2);margin-bottom:10px;">พิมพ์ชื่อของคุณเพื่อดูสถานะผ้าค่ะ 🧺</p>
-        <div class="tsearch">
-          <input id="track-name" placeholder="เช่น พี่นิด, อาจารย์มานะ" value="${customerName}"/>
-          <button onclick="trackOrder()">ค้นหา</button>
-        </div>
-      </div>
-      <div id="track-result"></div>
-      <div class="cv-contact">
-        📞 ติดต่อร้าน: <strong>064-253-7741</strong><br/>
-        <span style="font-size:10px;color:var(--text3);">เวลาทำการ 08:00 – 19:30 น.</span>
-      </div>
-    </div>`;
-  if(customerName) trackOrder();
-}
-
-// ---- FORM ----
 function pick(g,el,v){
   document.querySelectorAll('#'+g+' .rb').forEach(b=>b.classList.remove('on'));
   el.classList.add('on');
   if(g==='rg-wash')sel.wash=v;
   if(g==='rg-urgent')sel.urgent=v;
-  if(g==='rg-delivery')sel.delivery=v;
+  if(g==='rg-delivery'){
+    sel.delivery=v;
+    document.getElementById('delivery-time-wrap').style.display=v==='mpu'?'block':'none';
+  }
+  if(g==='rg-hanger')sel.hanger=v;
+  if(g==='rg-type')sel.type=v;
+  updatePricePreview();
+}
+function pickTime(el,v){
+  document.querySelectorAll('#rg-dtime .rb').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');sel.delivery_time=v;
+}
+function updatePricePreview(){
+  const urgentFee={normal:0,urgent3:20,urgent24:40}[sel.urgent]||0;
+  const deliveryFee={self:0,mpu:0,outside:20}[sel.delivery]||0;
+  const extra=urgentFee+deliveryFee;
+  const type=document.getElementById('cust-type')?.value||'daily';
+  let baseText='กรอกรายละเอียดเพื่อคำนวณราคา';
+  let base=0;
+  if(type==='monthly'){base=0;baseText='รายเดือน (฿800/เดือน) + รายการพิเศษ';}
+  const total=base+extra;
+  const el=document.getElementById('price-preview');
+  if(el) el.innerHTML=`<div class="price-total">฿${total>0?total:'—'}</div>
+    <div class="price-breakdown">${baseText}${urgentFee>0?' + ค่าด่วน ฿'+urgentFee:''}${deliveryFee>0?' + ค่าส่ง ฿'+deliveryFee:''}</div>`;
 }
 function clearPhoto(){
   photoData=null;
@@ -422,7 +620,7 @@ function resizeImg(dataUrl,max,cb){
     if(w>max||h>max){if(w>h){h=Math.round(h*max/w);w=max;}else{w=Math.round(w*max/h);h=max;}}
     const c=document.createElement('canvas');c.width=w;c.height=h;
     c.getContext('2d').drawImage(img,0,0,w,h);
-    cb(c.toDataURL('image/jpeg',0.75));
+    cb(c.toDataURL('image/jpeg',0.6));
   };
   img.src=dataUrl;
 }
@@ -432,7 +630,7 @@ function previewPhoto(input){
     document.getElementById('photo-name').textContent=file.name;
     const reader=new FileReader();
     reader.onload=e=>{
-      resizeImg(e.target.result,900,resized=>{
+      resizeImg(e.target.result,400,resized=>{
         photoData=resized;
         document.getElementById('photo-preview').innerHTML='<img src="'+resized+'"/>';
         document.getElementById('btn-rp').style.display='inline-block';
@@ -442,43 +640,60 @@ function previewPhoto(input){
   }
 }
 
+// ---- ADD ORDER ----
 async function addOrder(){
-  const owner=document.getElementById('owner').value.trim();
+  const phone=document.getElementById('search-phone').value.trim();
   const desc=document.getElementById('desc').value.trim();
-  if(!owner||!desc){toast('กรุณากรอกชื่อและรายละเอียดผ้าค่ะ','err');return;}
+  if(!phone){toast('กรุณาค้นหาลูกค้าก่อนค่ะ','err');return;}
+  if(!desc){toast('กรุณากรอกรายละเอียดผ้าค่ะ','err');return;}
+  if(!currentCustomer){toast('ไม่พบลูกค้านี้ในระบบ กรุณาเพิ่มลูกค้าก่อนค่ะ','err');return;}
+  const urgentFee={normal:0,urgent3:20,urgent24:40}[sel.urgent]||0;
+  const deliveryFee={self:0,mpu:0,outside:20}[sel.delivery]||0;
+  const custType=document.getElementById('cust-type').value;
+  const price=urgentFee+deliveryFee+(custType==='monthly'?0:0);
   const btn=document.getElementById('btn-add');
-  btn.disabled=true;btn.textContent=photoData?'กำลังอัปโหลดรูปและบันทึก...':'กำลังบันทึก...';
+  btn.disabled=true;btn.textContent='กำลังบันทึก...';
   try{
-    const data=await apiPost({
-      action:'add',
-      owner, source:document.getElementById('source').value.trim(),
-      phone:document.getElementById('phone').value.trim(),
-      lineid:document.getElementById('lineid').value.trim(),
-      desc, date:document.getElementById('pickup-date').value,
-      wash:sel.wash, urgent:sel.urgent, delivery:sel.delivery,
-      note:document.getElementById('note').value.trim(),
-      photo:photoData||''
+    const d=await apiPost({
+      action:'addOrder',phone,
+      owner:currentCustomer.name,
+      nickname:currentCustomer.nickname||'',
+      source:currentCustomer.source||'',
+      desc,date:document.getElementById('pickup-date').value,
+      wash_type:sel.wash,urgent:sel.urgent,
+      delivery:sel.delivery,delivery_time:sel.delivery_time,
+      hanger:sel.hanger,note:document.getElementById('note').value.trim(),
+      price,photo:photoData||''
     });
-    if(data.success){
-      toast('✓ บันทึกแล้วค่ะ! รหัส: '+data.id);
-      ['owner','source','phone','lineid','desc','note'].forEach(id=>document.getElementById(id).value='');
+    if(d.success){
+      toast('✓ บันทึกแล้วค่ะ! รหัส: '+d.id);
+      const link=SITE+'?view=customer&phone='+phone;
+      const linkBox=document.getElementById('new-order-link');
+      linkBox.style.display='block';
+      linkBox.innerHTML=`<div class="fc"><div class="fc-t">🔗 ลิงก์สำหรับ ${currentCustomer.nickname||currentCustomer.name}</div>
+        <div class="link-copy-box">
+          <div class="link-url">${link}</div>
+          <button class="btn-copy" onclick="copyLink('${link}')">Copy</button>
+        </div>
+        <p style="font-size:10px;color:var(--text3);margin-top:5px;">ส่งให้ลูกค้าทาง Line เพื่อเช็คสถานะค่ะ</p>
+      </div>`;
+      document.getElementById('desc').value='';
+      document.getElementById('note').value='';
       clearPhoto();
-      ['rg-wash','rg-urgent','rg-delivery'].forEach(g=>document.querySelectorAll('#'+g+' .rb').forEach((b,i)=>b.classList.toggle('on',i===0)));
-      sel={wash:'wash_normal',urgent:'false',delivery:'pickup'};
-      sw('list');
-    }else{toast('เกิดข้อผิดพลาด: '+(data.error||'unknown'),'err');}
+      currentCustomer=null;
+      document.getElementById('customer-found').style.display='none';
+      document.getElementById('search-phone').value='';
+    }else{toast('เกิดข้อผิดพลาด: '+(d.error||'unknown'),'err');}
   }catch(e){toast('เชื่อมต่อไม่ได้ค่ะ','err');}
   btn.disabled=false;btn.textContent='✓ บันทึกรายการผ้า';
 }
 
-// ---- LIST ----
+// ---- ORDERS ----
 async function loadOrders(){
   const el=document.getElementById('order-list');
   if(el)el.innerHTML='<div class="loading">กำลังโหลด...</div>';
-  try{
-    const data=await apiGet({action:'list'});
-    orders=data.orders||[];renderList();
-  }catch(e){if(el)el.innerHTML='<div class="empty"><div class="ei">📡</div><p>เชื่อมต่อไม่ได้ค่ะ</p></div>';}
+  try{const d=await apiGet({action:'listOrders'});orders=d.orders||[];renderList();}
+  catch(e){if(el)el.innerHTML='<div class="empty"><div class="ei">📡</div><p>เชื่อมต่อไม่ได้ค่ะ</p></div>';}
 }
 function setF(f,el){
   filter=f;
@@ -487,108 +702,119 @@ function setF(f,el){
 }
 function getF(){
   if(filter==='all')return orders;
-  if(filter==='pending')return orders.filter(o=>o.status==='pending');
-  if(filter==='done')return orders.filter(o=>o.status==='done');
-  if(filter==='urgent')return orders.filter(o=>String(o.urgent)==='true');
-  if(filter==='unpaid')return orders.filter(o=>String(o.paid)!=='true');
+  if(filter==='active')return orders.filter(o=>['pending','washing','ironing'].includes(o.status));
+  if(filter==='ready')return orders.filter(o=>o.status==='ready');
+  if(filter==='urgent')return orders.filter(o=>o.urgent!=='normal');
+  if(filter==='pay-wait')return orders.filter(o=>o.payment_method&&String(o.paid)!=='true');
+  if(filter==='unpaid')return orders.filter(o=>String(o.paid)!=='true'&&o.status==='ready');
   return orders;
 }
 function fmtDate(d){
-  if(!d)return'';
-  const s=String(d);
-  if(s.includes('T')){const dt=new Date(s);return dt.toLocaleDateString('th-TH');}
+  if(!d)return'';const s=String(d);
+  if(s.includes('T')){return new Date(s).toLocaleDateString('th-TH');}
   return s;
 }
 function renderList(){
-  const done=orders.filter(o=>o.status==='done').length;
+  const active=orders.filter(o=>!['done'].includes(o.status)).length;
+  const unpaid=orders.filter(o=>String(o.paid)!=='true').length;
   document.getElementById('st-total').textContent=orders.length;
-  document.getElementById('st-pending').textContent=orders.length-done;
-  document.getElementById('st-unpaid').textContent=orders.filter(o=>String(o.paid)!=='true').length;
+  document.getElementById('st-pending').textContent=active;
+  document.getElementById('st-unpaid').textContent=unpaid;
   const list=getF();
   const el=document.getElementById('order-list');
-  if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ไม่มีรายการในหมวดนี้ค่ะ</p></div>';return;}
-  el.innerHTML=list.sort((a,b)=>(String(b.urgent)==='true')-(String(a.urgent)==='true')).map(o=>cardHTML(o,true)).join('');
+  if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ไม่มีรายการค่ะ</p></div>';return;}
+  el.innerHTML=list.sort((a,b)=>{
+    const ua=a.urgent!=='normal',ub=b.urgent!=='normal';
+    if(ua&&!ub)return -1;if(!ua&&ub)return 1;return 0;
+  }).map(o=>adminCardHTML(o)).join('');
 }
-function cardHTML(o,isAdmin){
+
+function adminCardHTML(o){
   const pin=o.photo_in&&String(o.photo_in).startsWith('http');
   const pdone=o.photo_done&&String(o.photo_done).startsWith('http');
+  const pslip=o.slip_photo&&String(o.slip_photo).startsWith('http');
+  const payWait=o.payment_method&&String(o.paid)!=='true';
+  const custLink=SITE+'?view=customer&phone='+o.phone;
+  const stepIdx=STATUS_STEPS.indexOf(o.status);
   return`<div class="card">
     <div class="ctop">
       <div>
-        <div class="cname">${o.owner}</div>
-        <div class="csub">${o.id}${o.source?' · '+o.source:''} · ${fmtDate(o.date)}</div>
-        ${o.phone||o.lineid?`<div class="ccon">${o.phone?'📞 '+o.phone:''}${o.phone&&o.lineid?' · ':''}${o.lineid?'Line: '+o.lineid:''}</div>`:''}
+        <div class="cname">${o.owner||''} ${o.nickname?'('+o.nickname+')':''}</div>
+        <div class="csub">${o.id}${o.source?' · '+o.source:''} · ${fmtDate(o.created_at)}</div>
+        ${o.phone?`<div class="ccon">📞 ${o.phone}</div>`:''}
       </div>
       <div style="display:flex;flex-direction:column;align-items:flex-end;gap:3px;">
-        <span class="bg ${o.status==='done'?'bg-d':'bg-p'}">${o.status==='done'?'✓ เสร็จแล้ว':'⏳ กำลังดำเนินการ'}</span>
-        ${String(o.urgent)==='true'?'<span class="bg bg-u">🔴 ด่วน</span>':''}
+        <span class="bg ${o.status==='ready'||o.status==='done'?'bg-d':'bg-p'}">${STATUS_TH[o.status]||o.status}</span>
+        ${o.urgent!=='normal'?`<span class="bg bg-u">${o.urgent==='urgent24'?'ด่วน 24ชม':'ด่วน 3 วัน'}</span>`:''}
+        ${payWait?'<span class="bg bg-wait">รอตรวจสอบเงิน</span>':''}
       </div>
     </div>
     <div class="bgs">
-      <span class="bg bg-t">${WASH[o.wash]||o.wash}</span>
-      <span class="bg bg-t">${DELIVERY[o.delivery]||o.delivery}</span>
-      <span class="bg ${String(o.paid)==='true'?'bg-pd':'bg-up'}">${String(o.paid)==='true'?'✓ เก็บเงินแล้ว':(o.price&&o.price!='0'?'💰 ค้างชำระ ฿'+o.price:'รอประเมินราคา')}</span>
+      <span class="bg bg-t">${WASH_LABEL[o.wash_type]||o.wash_type}</span>
+      <span class="bg bg-t">${DELIVERY_LABEL[o.delivery]||o.delivery}</span>
+      <span class="bg ${String(o.paid)==='true'?'bg-pd':'bg-up'}">${String(o.paid)==='true'?'✓ ชำระแล้ว':(o.price&&o.price!='0'?'ค้างชำระ ฿'+o.price:'รอประเมินราคา')}</span>
     </div>
     <div class="cdet">${o.desc}</div>
     ${o.note?`<div class="cnote">📝 ${o.note}</div>`:''}
-    ${pin||pdone?`<div class="photos-row">
+    ${String(o.hanger)==='true'?'<div class="hanger-warn">🪝 ส่งแบบใส่ไม้แขวน — ลูกค้าต้องเตรียมไม้แขวนมาด้วยค่ะ</div>':''}
+    ${pin||pdone||pslip?`<div class="photos-row">
       ${pin?`<div class="photo-item"><span>ก่อนซัก</span><a href="${o.photo_in}" target="_blank"><img src="${o.photo_in}" class="pthumb"/></a></div>`:''}
       ${pdone?`<div class="photo-item"><span>หลังซัก</span><a href="${o.photo_done}" target="_blank"><img src="${o.photo_done}" class="pthumb"/></a></div>`:''}
+      ${pslip?`<div class="photo-item"><span>สลิป</span><a href="${o.slip_photo}" target="_blank"><img src="${o.slip_photo}" class="pthumb"/></a></div>`:''}
     </div>`:''}
-    ${isAdmin?`
-    <div class="cprice">ราคา: ฿${o.price||0} <button class="btn-ep" onclick="editPrice('${o.id}')">แก้ไขราคา</button></div>
-    <hr class="div"/>
+    <div class="cprice">฿${o.price||0} <button class="btn-ep" onclick="editPrice('${o.id}')">แก้ไขราคา</button></div>
+    ${payWait?`<div class="pay-wait-box">💰 ลูกค้าแจ้งชำระ: ${o.payment_method==='cash'?'เงินสด':'โอนเงิน'}
+      <button class="btn-confirm" onclick="confirmPay('${o.id}')">✓ ยืนยันรับเงิน</button>
+    </div>`:''}
+    <div class="divider"></div>
     <div class="cact">
-      ${o.status==='pending'?`<button class="btn-s btn-done" onclick="upd('${o.id}','status','done')">✓ เสร็จแล้ว</button>`:`<button class="btn-s" onclick="upd('${o.id}','status','pending')">ย้อนกลับ</button>`}
-      ${String(o.paid)!=='true'&&o.price&&o.price!='0'?`<button class="btn-s btn-pay" onclick="upd('${o.id}','paid','true')">เก็บเงินแล้ว</button>`:''}
-      ${!pdone?`<button class="upload-done-btn" onclick="uploadDonePhoto('${o.id}')">📷 แนบรูปหลังซัก</button>`:''}
-      <button class="btn-s btn-del" onclick="del('${o.id}')">ลบ</button>
-    </div>`:`
-    <div style="font-size:12px;font-weight:700;color:var(--text);margin-top:6px;">ยอดชำระ: ฿${o.price||0} ${String(o.paid)==='true'?'<span style="color:var(--green)">(ชำระแล้ว)</span>':''}</div>
-    ${o.status==='done'?`<div class="ready-box">🎉 ผ้าพร้อมรับคืนแล้วค่ะ! กรุณาติดต่อ 064-253-7741</div>`:''}
-    `}
+      ${o.status==='pending'?`<button class="btn-s bg-w" onclick="updStatus('${o.id}','washing')">🫧 กำลังซัก</button>`:''}
+      ${o.status==='washing'?`<button class="btn-s bg-i" onclick="updStatus('${o.id}','ironing')">👔 กำลังรีด</button>`:''}
+      ${o.status==='ironing'?`<button class="btn-s btn-done" onclick="updStatus('${o.id}','ready')">✓ พร้อมส่ง</button>`:''}
+      ${o.status==='ready'?`<button class="btn-s btn-done" onclick="updStatus('${o.id}','done')">✓ ส่งคืนแล้ว</button>`:''}
+      ${o.status==='done'?`<button class="btn-s" onclick="updStatus('${o.id}','pending')">ย้อนกลับ</button>`:''}
+      ${String(o.paid)!=='true'&&o.price&&o.price!='0'?`<button class="btn-s btn-pay" onclick="updO('${o.id}','paid','true')">เก็บเงินแล้ว</button>`:''}
+      ${!pdone?`<button class="upload-btn" onclick="uploadPhoto('${o.id}','done')">📷 รูปหลังซัก</button>`:''}
+      <button class="btn-s" style="font-size:10px;background:var(--p50);color:var(--p600);border-color:var(--p200);" onclick="copyLink('${custLink}')">🔗 Link</button>
+      <button class="btn-s btn-del" onclick="delOrder('${o.id}')">ลบ</button>
+    </div>
   </div>`;
 }
 
+async function updStatus(id,status){
+  await updO(id,'status',status);
+}
 async function editPrice(id){
   const v=prompt('กรอกราคา (บาท):');
-  if(v!==null&&v.trim()!=='')upd(id,'price',v.trim());
+  if(v!==null&&v.trim()!=='')await updO(id,'price',v.trim());
 }
-async function upd(id,field,value){
+async function confirmPay(id){
+  await updO(id,'paid','true');toast('✓ ยืนยันรับเงินแล้วค่ะ');
+}
+async function updO(id,field,value){
   try{
-    await apiGet({action:'update',id,field,value});
-    const o=orders.find(x=>x.id===id);
-    if(o){o[field]=value;renderList();}
+    await apiGet({action:'updateOrder',id,field,value});
+    const o=orders.find(x=>x.id===id);if(o){o[field]=value;renderList();}
     toast('✓ อัปเดตแล้วค่ะ');
   }catch(e){toast('อัปเดตไม่ได้ค่ะ','err');}
 }
-async function del(id){
+async function delOrder(id){
   if(!confirm('ลบรายการนี้?'))return;
-  try{
-    await apiGet({action:'delete',id});
-    orders=orders.filter(x=>x.id!==id);renderList();toast('ลบแล้วค่ะ');
-  }catch(e){toast('ลบไม่ได้ค่ะ','err');}
+  try{await apiGet({action:'deleteOrder',id});orders=orders.filter(x=>x.id!==id);renderList();toast('ลบแล้วค่ะ');}
+  catch(e){toast('ลบไม่ได้ค่ะ','err');}
 }
-
-// ---- UPLOAD DONE PHOTO ----
-function uploadDonePhoto(id){
-  const inp=document.createElement('input');
-  inp.type='file';inp.accept='image/*';
+function uploadPhoto(orderId,type){
+  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
   inp.onchange=async e=>{
-    const file=e.target.files[0];
-    if(!file)return;
-    toast('กำลังอัปโหลดรูปหลังซัก...');
+    const file=e.target.files[0];if(!file)return;
+    toast('กำลังอัปโหลดรูป...');
     const reader=new FileReader();
     reader.onload=async ev=>{
-      resizeImg(ev.target.result,900,async resized=>{
+      resizeImg(ev.target.result,400,async resized=>{
         try{
-          const data=await apiPost({action:'uploadPhoto',id,type:'done',photo:resized});
-          if(data.success){
-            const o=orders.find(x=>x.id===id);
-            if(o)o.photo_done=data.url;
-            renderList();
-            toast('✓ อัปโหลดรูปหลังซักแล้วค่ะ');
-          }else{toast('อัปโหลดไม่ได้ค่ะ','err');}
+          const d=await apiPost({action:'uploadPhoto',id:orderId,type,photo:resized});
+          if(d.success){const o=orders.find(x=>x.id===orderId);if(o)o['photo_'+type]=d.url;renderList();toast('✓ อัปโหลดรูปแล้วค่ะ');}
+          else toast('อัปโหลดไม่ได้ค่ะ','err');
         }catch(e){toast('เชื่อมต่อไม่ได้ค่ะ','err');}
       });
     };
@@ -597,26 +823,134 @@ function uploadDonePhoto(id){
   inp.click();
 }
 
-// ---- TRACK ----
-async function trackOrder(){
-  const name=document.getElementById('track-name').value.trim().toLowerCase();
-  const el=document.getElementById('track-result');
-  if(!name){el.innerHTML='';return;}
-  el.innerHTML='<div class="loading">กำลังค้นหา...</div>';
+// ---- CUSTOMERS ----
+async function loadCustomers(){
+  const el=document.getElementById('customer-list');
+  if(!el)return;
+  el.innerHTML='<div class="loading">กำลังโหลด...</div>';
   try{
-    const data=await apiGet({action:'list'});
-    const res=(data.orders||[]).filter(o=>o.owner.toLowerCase().includes(name));
-    if(!res.length){el.innerHTML='<div class="empty"><div class="ei">🔍</div><p>ไม่พบรายการของ "'+name+'" ค่ะ</p></div>';return;}
-    el.innerHTML=res.map(o=>cardHTML(o,false)).join('');
+    const d=await apiGet({action:'listCustomers'});
+    customers=d.customers||[];
+    if(!customers.length){el.innerHTML='<div class="empty"><div class="ei">👤</div><p>ยังไม่มีลูกค้าค่ะ</p></div>';return;}
+    el.innerHTML=customers.map(c=>`
+      <div class="cust-card">
+        <div class="cust-info">
+          <div class="cn">${c.name} ${c.nickname?'('+c.nickname+')':''}</div>
+          <div class="cp">📞 ${c.phone}${c.source?' · '+c.source:''}${c.lineid?' · Line: '+c.lineid:''}</div>
+        </div>
+        <span class="cust-type ${c.type==='monthly'?'type-monthly':'type-daily'}">${c.type==='monthly'?'รายเดือน':'รายวัน'}</span>
+      </div>`).join('');
   }catch(e){el.innerHTML='<div class="empty"><div class="ei">📡</div><p>เชื่อมต่อไม่ได้ค่ะ</p></div>';}
 }
+async function addCustomer(){
+  const phone=document.getElementById('nc-phone').value.trim();
+  const name=document.getElementById('nc-name').value.trim();
+  if(!phone||!name){toast('กรุณากรอกเบอร์และชื่อค่ะ','err');return;}
+  try{
+    const d=await apiPost({
+      action:'addCustomer',phone,name,
+      nickname:document.getElementById('nc-nick').value.trim(),
+      source:document.getElementById('nc-source').value.trim(),
+      lineid:document.getElementById('nc-line').value.trim(),
+      type:sel.type
+    });
+    if(d.success){
+      toast('✓ เพิ่มลูกค้าแล้วค่ะ');
+      ['nc-phone','nc-name','nc-nick','nc-source','nc-line'].forEach(id=>document.getElementById(id).value='');
+      loadCustomers();
+    }else toast(d.error||'เกิดข้อผิดพลาดค่ะ','err');
+  }catch(e){toast('เชื่อมต่อไม่ได้ค่ะ','err');}
+}
 
-// ---- SW TAB ----
+// ---- SUMMARY ----
+async function loadSummary(){
+  try{
+    const d=await apiGet({action:'getDailySummary'});
+    const s=d.summary||{};
+    const el=document.getElementById('summary-grid');
+    if(el) el.innerHTML=`
+      <div class="sum-card"><div class="sum-n" style="color:var(--p600);">฿${s.total||0}</div><div class="sum-l">รายได้วันนี้</div></div>
+      <div class="sum-card"><div class="sum-n" style="color:var(--green);">฿${s.transfer||0}</div><div class="sum-l">โอนเงิน</div></div>
+      <div class="sum-card"><div class="sum-n" style="color:var(--amber);">฿${s.cash||0}</div><div class="sum-l">เงินสด</div></div>
+      <div class="sum-card"><div class="sum-n" style="color:var(--red);">฿${s.pending||0}</div><div class="sum-l">ค้างชำระ</div></div>`;
+    const unpaidEl=document.getElementById('unpaid-list');
+    const unpaid=orders.filter(o=>String(o.paid)!=='true'&&o.price&&o.price!='0');
+    if(unpaidEl){
+      if(!unpaid.length){unpaidEl.innerHTML='<div class="empty"><div class="ei">✅</div><p>ไม่มีรายการค้างชำระค่ะ</p></div>';return;}
+      unpaidEl.innerHTML=unpaid.map(o=>`
+        <div class="card">
+          <div class="ctop">
+            <div><div class="cname">${o.owner||''}</div><div class="csub">${o.id} · ${o.phone}</div></div>
+            <span class="bg bg-up">ค้างชำระ ฿${o.price}</span>
+          </div>
+          <div class="cdet">${o.desc}</div>
+        </div>`).join('');
+    }
+  }catch(e){}
+}
+
+// ---- PAYMENT MODAL ----
+function showPayModal(orderId,price){
+  document.getElementById('modal').innerHTML=`
+  <div class="modal-bg" onclick="closeModal(event)">
+    <div class="modal">
+      <h3>💳 ชำระเงิน</h3>
+      <div class="modal-bank">
+        <div class="amount">฿${price}</div>
+        <div class="bank-info">ธนาคารกสิกรไทย<br/><span class="bank-no">2161036679</span><br/>ธาราทิพย์ สูงขาว</div>
+      </div>
+      <div class="pay-btns">
+        <button class="btn-slip" onclick="doUploadSlip('${orderId}')">📎 แนบสลิปโอนเงิน</button>
+        <button class="btn-cash" onclick="doCash('${orderId}')">💵 จ่ายเงินสดที่ร้าน</button>
+        <button class="btn-close-m" onclick="document.getElementById('modal').innerHTML=''">ปิด</button>
+      </div>
+    </div>
+  </div>`;
+}
+function closeModal(e){if(e.target.classList.contains('modal-bg'))document.getElementById('modal').innerHTML='';}
+async function doCash(id){
+  document.getElementById('modal').innerHTML='';
+  await apiGet({action:'updateOrder',id,field:'payment_method',value:'cash'});
+  toast('✓ แจ้งจ่ายเงินสดแล้วค่ะ รอร้านยืนยัน');
+  initCustomer();
+}
+function doUploadSlip(orderId){
+  document.getElementById('modal').innerHTML='';
+  const inp=document.createElement('input');inp.type='file';inp.accept='image/*';
+  inp.onchange=async e=>{
+    const file=e.target.files[0];if(!file)return;
+    toast('กำลังอัปโหลดสลิป...');
+    const reader=new FileReader();
+    reader.onload=async ev=>{
+      resizeImg(ev.target.result,400,async resized=>{
+        try{
+          const d=await apiPost({action:'uploadPhoto',id:orderId,type:'slip',photo:resized});
+          if(d.success){
+            await apiGet({action:'updateOrder',id:orderId,field:'payment_method',value:'transfer'});
+            toast('✓ แนบสลิปแล้วค่ะ รอร้านยืนยัน');
+            initCustomer();
+          }else toast('อัปโหลดไม่ได้ค่ะ','err');
+        }catch(e){toast('เชื่อมต่อไม่ได้ค่ะ','err');}
+      });
+    };
+    reader.readAsDataURL(file);
+  };
+  inp.click();
+}
+
+// ---- UTILS ----
+function copyLink(link){
+  navigator.clipboard.writeText(link).then(()=>toast('✓ คัดลอกลิงก์แล้วค่ะ!')).catch(()=>{
+    const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);toast('✓ คัดลอกแล้วค่ะ!');
+  });
+}
 function sw(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['add','list','track','shop'][i]===name));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['add','list','customers','summary','shop'][i]===name));
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='list')loadOrders();
+  if(name==='customers')loadCustomers();
+  if(name==='summary'){loadOrders();loadSummary();}
 }
 </script>
 </body>
