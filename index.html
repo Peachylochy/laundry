@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ระบบซักอบรีด</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Sarabun', sans-serif; background: #f5f5f5; color: #222; }
+.container { max-width: 600px; margin: 0 auto; padding: 1rem; }
+h1 { font-size: 18px; font-weight: 600; padding: 1rem 0 0.5rem; }
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid #ddd; margin-bottom: 1.5rem; }
+.tab { padding: 8px 16px; font-size: 14px; cursor: pointer; border: none; background: none; color: #888; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab.active { color: #222; border-bottom: 2px solid #222; font-weight: 600; }
+.section { display: none; }
+.section.active { display: block; }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-full { grid-column: 1 / -1; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 12px; color: #666; font-weight: 600; }
+.form-group input, .form-group textarea { padding: 8px 10px; font-size: 14px; border: 1px solid #ddd; border-radius: 8px; background: #fff; color: #222; width: 100%; font-family: 'Sarabun', sans-serif; }
+.form-group textarea { resize: vertical; min-height: 64px; }
+.radio-group { display: flex; gap: 8px; flex-wrap: wrap; }
+.radio-btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; font-size: 13px; background: #fff; color: #222; }
+.radio-btn.selected { background: #222; color: #fff; border-color: #222; }
+.btn-primary { background: #222; color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; font-family: 'Sarabun', sans-serif; }
+.btn-primary:disabled { opacity: 0.5; }
+.card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 1rem; margin-bottom: 12px; }
+.card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
+.card-name { font-weight: 600; font-size: 15px; }
+.card-sub { font-size: 12px; color: #888; margin-top: 2px; }
+.badges { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
+.badge { padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
+.b-pending { background: #FEF3C7; color: #92400E; }
+.b-done { background: #D1FAE5; color: #065F46; }
+.b-urgent { background: #FEE2E2; color: #991B1B; }
+.b-normal { background: #F3F4F6; color: #374151; }
+.b-unpaid { background: #FEE2E2; color: #991B1B; }
+.b-paid { background: #D1FAE5; color: #065F46; }
+.card-detail { font-size: 13px; color: #555; margin-bottom: 3px; }
+.card-actions { display: flex; gap: 8px; margin-top: 10px; border-top: 1px solid #f0f0f0; padding-top: 10px; flex-wrap: wrap; }
+.btn-sm { padding: 5px 12px; font-size: 12px; border: 1px solid #ddd; border-radius: 8px; cursor: pointer; background: #f9f9f9; color: #222; font-family: 'Sarabun', sans-serif; }
+.btn-done { background: #D1FAE5; color: #065F46; border-color: #6EE7B7; }
+.btn-pay { background: #FEF3C7; color: #92400E; border-color: #FDE68A; }
+.btn-del { color: #999; margin-left: auto; }
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
+.stat { background: #fff; border-radius: 10px; padding: 12px; text-align: center; border: 1px solid #e5e5e5; }
+.stat-num { font-size: 26px; font-weight: 700; }
+.stat-label { font-size: 11px; color: #888; margin-top: 2px; }
+.filters { display: flex; gap: 6px; margin-bottom: 1rem; flex-wrap: wrap; }
+.chip { padding: 4px 12px; font-size: 12px; border: 1px solid #ddd; border-radius: 20px; cursor: pointer; background: #fff; color: #888; }
+.chip.active { background: #222; color: #fff; border-color: #222; }
+.empty { text-align: center; padding: 2rem; color: #aaa; font-size: 14px; }
+.loading { text-align: center; padding: 2rem; color: #aaa; }
+.toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 600; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; white-space: nowrap; }
+.toast.success { background: #D1FAE5; color: #065F46; }
+.toast.error { background: #FEE2E2; color: #991B1B; }
+.toast.show { opacity: 1; }
+.photo-area { display: flex; align-items: center; gap: 12px; }
+.photo-preview { width: 72px; height: 72px; background: #f5f5f5; border-radius: 8px; border: 1px dashed #ccc; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; overflow: hidden; font-size: 24px; }
+.photo-preview img { width: 100%; height: 100%; object-fit: cover; }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+<h1>🧺 ระบบซักอบรีด</h1>
+
+<div id="toast" class="toast"></div>
+
+<div class="tabs">
+  <button class="tab active" onclick="switchTab('add')">+ รับผ้า</button>
+  <button class="tab" onclick="switchTab('list')">รายการทั้งหมด</button>
+  <button class="tab" onclick="switchTab('track')">เช็คสถานะ</button>
+</div>
+
+<div id="tab-add" class="section active">
+  <div class="form-grid">
+    <div class="form-group">
+      <label>ชื่อเจ้าของผ้า</label>
+      <input type="text" id="owner" placeholder="เช่น พี่นิด" />
+    </div>
+    <div class="form-group">
+      <label>จากที่ไหน</label>
+      <input type="text" id="source" placeholder="เช่น ออฟฟิศ" />
+    </div>
+    <div class="form-group">
+      <label>วันที่รับผ้า</label>
+      <input type="date" id="pickup-date" />
+    </div>
+    <div class="form-group">
+      <label>ราคา (บาท)</label>
+      <input type="number" id="price" placeholder="0" min="0" />
+    </div>
+    <div class="form-group form-full">
+      <label>ประเภทผ้า / รายละเอียด</label>
+      <input type="text" id="desc" placeholder="เช่น เสื้อเชิ้ต 3 ตัว" />
+    </div>
+    <div class="form-group form-full">
+      <label>ประเภทการซัก</label>
+      <div class="radio-group" id="rg-wash">
+        <span class="radio-btn selected" onclick="pick('rg-wash',this,'wash_normal')">ซักรีดธรรมดา</span>
+        <span class="radio-btn" onclick="pick('rg-wash',this,'wash_dry')">ซักแห้ง</span>
+        <span class="radio-btn" onclick="pick('rg-wash',this,'wash_hand')">ซักมือ</span>
+      </div>
+    </div>
+    <div class="form-group form-full">
+      <label>ความเร่งด่วน</label>
+      <div class="radio-group" id="rg-urgent">
+        <span class="radio-btn selected" onclick="pick('rg-urgent',this,'false')">ปกติ</span>
+        <span class="radio-btn" onclick="pick('rg-urgent',this,'true')">ด่วน</span>
+      </div>
+    </div>
+    <div class="form-group form-full">
+      <label>การรับผ้าคืน</label>
+      <div class="radio-group" id="rg-delivery">
+        <span class="radio-btn selected" onclick="pick('rg-delivery',this,'pickup')">รับเองที่บ้าน</span>
+        <span class="radio-btn" onclick="pick('rg-delivery',this,'office')">ส่งที่ออฟฟิศ</span>
+      </div>
+    </div>
+    <div class="form-group form-full">
+      <label>แนบรูปผ้า</label>
+      <div class="photo-area">
+        <div class="photo-preview" id="photo-preview" onclick="document.getElementById('photo-input').click()">+</div>
+        <div>
+          <p style="font-size:13px;margin-bottom:4px;" id="photo-name">ยังไม่ได้เลือกรูป</p>
+          <p style="font-size:11px;color:#aaa;">รูปแสดงใน app เท่านั้น</p>
+          <div style="display:flex;gap:6px;margin-top:6px;">
+            <button class="btn-sm" onclick="document.getElementById('photo-input').click()">เลือกรูป</button>
+            <button class="btn-sm" id="btn-remove-photo" style="display:none;background:#FEE2E2;color:#991B1B;" onclick="removePhoto()">ลบรูป</button>
+          </div>
+        </div>
+        <input type="file" id="photo-input" accept="image/*" style="display:none" onchange="previewPhoto(this)" />
+      </div>
+    </div>
+    <div class="form-group form-full">
+      <label>หมายเหตุ</label>
+      <textarea id="note" placeholder="เช่น ระวังผ้าสี, อย่าอบ"></textarea>
+    </div>
+  </div>
+  <button class="btn-primary" id="btn-add" onclick="addOrder()">บันทึกรายการผ้า</button>
+</div>
+
+<div id="tab-list" class="section">
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="stat-total">—</div><div class="stat-label">รายการทั้งหมด</div></div>
+    <div class="stat"><div class="stat-num" id="stat-pending">—</div><div class="stat-label">ยังไม่เสร็จ</div></div>
+    <div class="stat"><div class="stat-num" id="stat-unpaid">—</div><div class="stat-label">ยังไม่เก็บเงิน</div></div>
+  </div>
+  <div class="filters">
+    <span class="chip active" onclick="setFilter('all',this)">ทั้งหมด</span>
+    <span class="chip" onclick="setFilter('pending',this)">ยังไม่เสร็จ</span>
+    <span class="chip" onclick="setFilter('done',this)">เสร็จแล้ว</span>
+    <span class="chip" onclick="setFilter('urgent',this)">ด่วน</span>
+    <span class="chip" onclick="setFilter('unpaid',this)">ยังไม่เก็บเงิน</span>
+  </div>
+  <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
+  <button class="btn-sm" style="width:100%;margin-top:8px;" onclick="loadOrders()">รีเฟรช</button>
+</div>
+
+<div id="tab-track" class="section">
+  <p style="font-size:14px;color:#888;margin-bottom:8px;">ค้นหาสถานะผ้าด้วยชื่อ</p>
+  <div style="display:flex;gap:8px;margin-bottom:1rem;">
+    <input type="text" id="track-name" placeholder="พิมพ์ชื่อ เช่น พี่นิด" style="flex:1;padding:8px 10px;font-size:14px;border:1px solid #ddd;border-radius:8px;font-family:Sarabun,sans-serif;" />
+    <button class="btn-sm" onclick="trackOrder()" style="padding:8px 16px;font-size:14px;">ค้นหา</button>
+  </div>
+  <div id="track-result"></div>
+</div>
+</div>
+
+<script>
+const API = 'https://script.google.com/macros/s/AKfycbwa8gqY17cc3TOwqHx-n8x1vYIEq7NSSQJSaLnNPbSZOXqajZ4yo162sFM87PJ8gnXB/exec';
+const WASH = { wash_normal:'ซักรีดธรรมดา', wash_dry:'ซักแห้ง', wash_hand:'ซักมือ' };
+const DELIVERY = { pickup:'รับเองที่บ้าน', office:'ส่งที่ออฟฟิศ' };
+let orders=[], filter='all', photoData=null;
+let sel={wash:'wash_normal',urgent:'false',delivery:'pickup'};
+
+document.getElementById('pickup-date').value=new Date().toISOString().split('T')[0];
+
+function toast(msg,type='success'){
+  const el=document.getElementById('toast');
+  el.textContent=msg; el.className='toast '+type+' show';
+  setTimeout(()=>el.classList.remove('show'),3000);
+}
+function pick(g,el,v){
+  document.querySelectorAll('#'+g+' .radio-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  if(g==='rg-wash') sel.wash=v;
+  if(g==='rg-urgent') sel.urgent=v;
+  if(g==='rg-delivery') sel.delivery=v;
+}
+function removePhoto(){
+  photoData=null;
+  document.getElementById('photo-preview').innerHTML='+';
+  document.getElementById('photo-name').textContent='ยังไม่ได้เลือกรูป';
+  document.getElementById('btn-remove-photo').style.display='none';
+  document.getElementById('photo-input').value='';
+}
+function previewPhoto(input){
+  if(input.files&&input.files[0]){
+    const file=input.files[0];
+    document.getElementById('photo-name').textContent=file.name;
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=new Image();
+      img.onload=()=>{
+        let w=img.width,h=img.height,max=800;
+        if(w>max||h>max){ if(w>h){h=Math.round(h*max/w);w=max;}else{w=Math.round(w*max/h);h=max;} }
+        const c=document.createElement('canvas'); c.width=w; c.height=h;
+        c.getContext('2d').drawImage(img,0,0,w,h);
+        photoData=c.toDataURL('image/jpeg',0.7);
+        document.getElementById('photo-preview').innerHTML='<img src="'+photoData+'" />';
+        document.getElementById('btn-remove-photo').style.display='inline-block';
+      };
+      img.src=e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+async function api(params){
+  const r=await fetch(API+'?'+new URLSearchParams(params).toString());
+  return r.json();
+}
+async function addOrder(){
+  const owner=document.getElementById('owner').value.trim();
+  const source=document.getElementById('source').value.trim();
+  const desc=document.getElementById('desc').value.trim();
+  const date=document.getElementById('pickup-date').value;
+  const note=document.getElementById('note').value.trim();
+  const price=document.getElementById('price').value||'0';
+  if(!owner||!desc){toast('กรุณากรอกชื่อและรายละเอียดผ้าค่ะ','error');return;}
+  const btn=document.getElementById('btn-add');
+  btn.disabled=true; btn.textContent='กำลังบันทึก...';
+  try{
+    const data=await api({action:'add',owner,source,desc,date,wash:sel.wash,urgent:sel.urgent,delivery:sel.delivery,note,price});
+    if(data.success){
+      toast('บันทึกแล้วค่ะ! รหัส: '+data.id);
+      ['owner','source','desc','note','price'].forEach(id=>document.getElementById(id).value='');
+      removePhoto();
+      ['rg-wash','rg-urgent','rg-delivery'].forEach(g=>document.querySelectorAll('#'+g+' .radio-btn').forEach((b,i)=>b.classList.toggle('selected',i===0)));
+      sel={wash:'wash_normal',urgent:'false',delivery:'pickup'};
+      switchTab('list');
+    } else { toast('เกิดข้อผิดพลาด: '+(data.error||'unknown'),'error'); }
+  } catch(e){ toast('เชื่อมต่อไม่ได้ค่ะ','error'); }
+  btn.disabled=false; btn.textContent='บันทึกรายการผ้า';
+}
+async function loadOrders(){
+  document.getElementById('order-list').innerHTML='<div class="loading">กำลังโหลด...</div>';
+  try{
+    const data=await api({action:'list'});
+    orders=data.orders||[]; renderList();
+  } catch(e){ document.getElementById('order-list').innerHTML='<div class="empty">เชื่อมต่อไม่ได้ค่ะ</div>'; }
+}
+function setFilter(f,el){
+  filter=f;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active'); renderList();
+}
+function getFiltered(){
+  if(filter==='all') return orders;
+  if(filter==='pending') return orders.filter(o=>o.status==='pending');
+  if(filter==='done') return orders.filter(o=>o.status==='done');
+  if(filter==='urgent') return orders.filter(o=>String(o.urgent)==='true');
+  if(filter==='unpaid') return orders.filter(o=>String(o.paid)!=='true');
+  return orders;
+}
+function renderList(){
+  const done=orders.filter(o=>o.status==='done').length;
+  document.getElementById('stat-total').textContent=orders.length;
+  document.getElementById('stat-pending').textContent=orders.length-done;
+  document.getElementById('stat-unpaid').textContent=orders.filter(o=>String(o.paid)!=='true').length;
+  const list=getFiltered();
+  const el=document.getElementById('order-list');
+  if(!list.length){el.innerHTML='<div class="empty">ไม่มีรายการในหมวดนี้</div>';return;}
+  el.innerHTML=list.sort((a,b)=>(String(b.urgent)==='true')-(String(a.urgent)==='true')).map(o=>`
+    <div class="card">
+      <div class="card-header">
+        <div><div class="card-name">${o.owner}</div><div class="card-sub">${o.id}${o.source?' · '+o.source:''} · รับวันที่ ${o.date}</div></div>
+        <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+          <span class="badge ${o.status==='done'?'b-done':'b-pending'}">${o.status==='done'?'เสร็จแล้ว':'กำลังดำเนินการ'}</span>
+          ${String(o.urgent)==='true'?'<span class="badge b-urgent">ด่วน</span>':''}
+        </div>
+      </div>
+      <div class="badges">
+        <span class="badge b-normal">${WASH[o.wash]||o.wash}</span>
+        <span class="badge b-normal">${DELIVERY[o.delivery]||o.delivery}</span>
+        <span class="badge ${String(o.paid)==='true'?'b-paid':'b-unpaid'}">${String(o.paid)==='true'?'เก็บเงินแล้ว':(o.price&&o.price!='0'?'ค้างชำระ ฿'+o.price:'ยังไม่กำหนดราคา')}</span>
+      </div>
+      <div class="card-detail">${o.desc}</div>
+      ${o.note?`<div class="card-detail" style="color:#aaa;">หมายเหตุ: ${o.note}</div>`:''}
+      <div class="card-actions">
+        ${o.status==='pending'?`<button class="btn-sm btn-done" onclick="upd('${o.id}','status','done')">เสร็จแล้ว</button>`:`<button class="btn-sm" onclick="upd('${o.id}','status','pending')">ย้อนกลับ</button>`}
+        ${String(o.paid)!=='true'?`<button class="btn-sm btn-pay" onclick="upd('${o.id}','paid','true')">เก็บเงินแล้ว</button>`:''}
+        <button class="btn-sm btn-del" onclick="del('${o.id}')">ลบ</button>
+      </div>
+    </div>
+  `).join('');
+}
+async function upd(id,field,value){
+  try{
+    await api({action:'update',id,field,value});
+    const o=orders.find(x=>x.id===id);
+    if(o){o[field]=value;renderList();}
+    toast('อัปเดตแล้วค่ะ');
+  } catch(e){toast('อัปเดตไม่ได้ค่ะ','error');}
+}
+async function del(id){
+  if(!confirm('ลบรายการนี้?')) return;
+  try{
+    await api({action:'delete',id});
+    orders=orders.filter(x=>x.id!==id); renderList(); toast('ลบแล้วค่ะ');
+  } catch(e){toast('ลบไม่ได้ค่ะ','error');}
+}
+async function trackOrder(){
+  const name=document.getElementById('track-name').value.trim().toLowerCase();
+  const el=document.getElementById('track-result');
+  if(!name){el.innerHTML='';return;}
+  el.innerHTML='<div class="loading">กำลังค้นหา...</div>';
+  try{
+    const data=await api({action:'list'});
+    const res=(data.orders||[]).filter(o=>o.owner.toLowerCase().includes(name));
+    if(!res.length){el.innerHTML='<div class="empty">ไม่พบรายการของ "'+name+'"</div>';return;}
+    el.innerHTML=res.map(o=>`
+      <div class="card">
+        <div class="card-header">
+          <div><div class="card-name">${o.owner}</div><div class="card-sub">${o.id}${o.source?' · '+o.source:''} · รับวันที่ ${o.date}</div></div>
+          <span class="badge ${o.status==='done'?'b-done':'b-pending'}">${o.status==='done'?'เสร็จแล้ว พร้อมรับคืน':'กำลังดำเนินการ'}</span>
+        </div>
+        <div class="badges">
+          <span class="badge b-normal">${WASH[o.wash]||o.wash}</span>
+          <span class="badge b-normal">${DELIVERY[o.delivery]||o.delivery}</span>
+          ${String(o.urgent)==='true'?'<span class="badge b-urgent">ด่วน</span>':''}
+        </div>
+        <div class="card-detail">${o.desc}</div>
+        ${o.note?`<div class="card-detail" style="color:#aaa;">หมายเหตุ: ${o.note}</div>`:''}
+      </div>
+    `).join('');
+  } catch(e){el.innerHTML='<div class="empty">เชื่อมต่อไม่ได้ค่ะ</div>';}
+}
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['add','list','track'][i]===name));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  if(name==='list') loadOrders();
+}
+loadOrders();
+</script>
+</body>
+</html>
