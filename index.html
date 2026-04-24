@@ -205,7 +205,7 @@ body{font-family:'Sarabun',sans-serif;background:var(--bg);color:var(--text);min
 <div id="modal"></div>
 
 <script>
-const API='https://script.google.com/macros/s/AKfycbzew1e-tG2WmaFa1yq1cXIJ-o_PlEbeAPIbcIeX_SVjtcV_F_IeYXFjH5UOHxnDSbbo/exec';
+const API='https://script.google.com/macros/s/AKfycbzFEiPZDSbQvqHXCk5tSbecxx8ss8fYxKood5jt-DDJ6PE1nCSFnWFhhUv1XYSjcgVy/exec';
 const LOGO='https://raw.githubusercontent.com/Peachylochy/laundry/main/Apinyalaundry_logo.png';
 const SITE='https://peachylochy.github.io/laundry';
 const WASH_LABEL={wash_iron:'ซักรีด',wash_dry:'ซักแห้ง',wash_hand:'ซักมือ',iron_only:'รีดอย่างเดียว'};
@@ -273,11 +273,12 @@ function renderCustomerLogin(prefill=''){
     <img src="${LOGO}" class="box-logo" onerror="this.style.display='none'"/>
     <div class="box-title">อภิญญา ซัก อบ รีด</div>
     <div class="box-sub">กรอกเบอร์โทรเพื่อดูสถานะผ้าค่ะ</div>
-    <input type="tel" class="inp" id="cphone" placeholder="เบอร์โทรศัพท์" value="${prefill}" onkeydown="if(event.key==='Enter')doCustomerLogin()"/>
+    <input type="tel" class="inp" id="cphone" placeholder="เบอร์โทรศัพท์ เช่น 0812345678" value="${prefill}" onkeydown="if(event.key==='Enter')doCustomerLogin()"/>
     <button class="btn-main" onclick="doCustomerLogin()">ดูสถานะผ้าของฉัน</button>
     <div class="err-text" id="cerr"></div>
     <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--text3);">
-      📞 ติดต่อร้าน: <strong style="color:var(--p700)">064-253-7741</strong>
+      📞 ติดต่อร้าน: <strong style="color:var(--p700)">082-596-4602</strong><br/>
+      Line: <strong style="color:var(--p700)">peach41</strong>
     </div>
   </div></div>`;
 }
@@ -286,7 +287,7 @@ async function doCustomerLogin(){
   if(!phone){document.getElementById('cerr').textContent='กรุณากรอกเบอร์โทรค่ะ';return;}
   const d=await apiGet({action:'customerLogin',phone});
   if(d.success)renderCustomerView(d.customer);
-  else document.getElementById('cerr').textContent=d.error||'ไม่พบเบอร์นี้ในระบบค่ะ';
+  else document.getElementById('cerr').textContent=d.error||'ไม่พบเบอร์นี้ในระบบค่ะ กรุณาติดต่อร้านค่ะ';
 }
 
 // ---- CUSTOMER VIEW ----
@@ -304,16 +305,23 @@ async function renderCustomerView(customer, orderId=''){
       <div class="cv-type">${customer.type==='monthly'?'ลูกค้ารายเดือน 🌟':'ลูกค้ารายวัน'} ${customer.source?'· '+customer.source:''}</div>
     </div>`:''}
     <div id="cv-orders"><div class="loading">กำลังโหลด...</div></div>
-    <div class="cv-contact">
-      📞 <strong>064-253-7741</strong> &nbsp;|&nbsp; Line: <strong>peach41</strong><br/>
-      <span style="font-size:10px;color:var(--text3);">เวลาทำการ 08:00 – 19:30 น.</span><br/>
-      <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" style="font-size:11px;color:var(--p600);font-weight:600;">📍 ดูแผนที่ร้าน</a>
+    <div class="ic" style="margin-top:12px;">
+      <div class="ih">📍 ข้อมูลร้าน</div>
+      <div class="ib">
+        <div class="ir"><div class="ii">📞</div><div><div class="il">เบอร์โทร</div><div class="iv">082-596-4602</div></div></div>
+        <div class="ir"><div class="ii">💬</div><div><div class="il">Line ID</div><div class="iv">peach41</div></div></div>
+        <div class="ir"><div class="ii">🕐</div><div><div class="il">เวลาทำการ</div><div class="iv">08:00 – 19:30 น.</div></div></div>
+        <div class="ir"><div class="ii">🏦</div><div><div class="il">ธนาคารกสิกรไทย</div><div class="iv">2161036679</div><div class="is">ธาราทิพย์ สูงขาว</div></div></div>
+      </div>
+      <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" class="btn-map">📍 ดูแผนที่ Google Maps</a>
     </div>
   </div>`;
   const phone=customer?.phone||custPhone;
   const d=await apiGet({action:'listOrders'});
   const all=d.orders||[];
-  let myOrders=orderId?all.filter(o=>o.id===orderId):all.filter(o=>String(o.phone)===String(phone));
+  let myOrders=orderId?all.filter(o=>o.id===orderId):all.filter(o=>String(o.phone).replace(/^'+/,'')===String(phone).replace(/^'+/,''));
+  // เรียงล่าสุดก่อน
+  myOrders=myOrders.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
   const el=document.getElementById('cv-orders');
   if(!myOrders.length){el.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ยังไม่มีรายการผ้าค่ะ</p></div>';return;}
   el.innerHTML=myOrders.map(o=>customerCardHTML(o)).join('');
@@ -393,12 +401,13 @@ function renderAdmin(){
     <div class="sh"><div class="sh-bar"></div><h2>บันทึกรับผ้าใหม่</h2></div>
     <div class="fc"><div class="fc-t">ค้นหาลูกค้า</div>
       <div class="fg">
-        <div class="f ff"><label>เบอร์โทรลูกค้า</label>
+        <div class="f ff"><label>เบอร์โทร หรือ ชื่อ-นามสกุล</label>
           <div style="display:flex;gap:7px;">
-            <input id="search-phone" type="tel" placeholder="กรอกเบอร์แล้วกด Enter" style="flex:1;" onkeydown="if(event.key==='Enter')searchCustomer()"/>
+            <input id="search-phone" type="text" placeholder="เช่น 0812345678 หรือ สมหญิง" style="flex:1;" onkeydown="if(event.key==='Enter')searchCustomer()"/>
             <button class="btn-s" onclick="searchCustomer()" style="padding:8px 12px;font-size:12px;">ค้นหา</button>
           </div>
         </div>
+        <div id="search-results" style="display:none;grid-column:1/-1;"></div>
       </div>
       <div id="customer-found" style="display:none;margin-top:10px;padding:10px;background:var(--green-bg);border-radius:9px;border:1px solid var(--green-b);">
         <div style="font-size:12px;font-weight:700;color:var(--green);" id="customer-found-text"></div>
@@ -526,23 +535,9 @@ function renderAdmin(){
     <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadSummary()">↻ รีเฟรช</button>
   </div>
 
-  <!-- SHOP -->
+  <!-- SHOP (Admin only - price list) -->
   <div id="tab-shop" class="section">
-    <div class="sh"><div class="sh-bar"></div><h2>ข้อมูลร้าน</h2></div>
-    <div class="ic"><div class="ih">📍 ติดต่อร้าน</div>
-      <div class="ib">
-        <div class="ir"><div class="ii">📞</div><div><div class="il">เบอร์โทร</div><div class="iv">064-253-7741</div></div></div>
-        <div class="ir"><div class="ii">💬</div><div><div class="il">Line ID</div><div class="iv">peach41</div></div></div>
-        <div class="ir"><div class="ii">🕐</div><div><div class="il">เวลาทำการ</div><div class="iv">08:00 – 19:30 น.</div></div></div>
-      </div>
-      <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" class="btn-map">📍 ดูแผนที่ Google Maps</a>
-    </div>
-    <div class="ic"><div class="ih">💳 ช่องทางรับเงิน</div>
-      <div class="ib">
-        <div class="ir"><div class="ii">🏦</div><div><div class="il">ธนาคารกสิกรไทย</div><div class="iv">2161036679</div><div class="is">ธาราทิพย์ สูงขาว</div></div></div>
-        <div class="ir"><div class="ii">📱</div><div><div class="il">พร้อมเพย์ / PromptPay</div><div class="iv">064-253-7741</div></div></div>
-      </div>
-    </div>
+    <div class="sh"><div class="sh-bar"></div><h2>ราคาบริการ</h2></div>
     <div class="ic"><div class="ih">💰 ราคาบริการ</div>
       <div class="ib">
         <div class="ir"><div class="ii">👕</div><div><div class="il">รายชิ้น</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ซักรีด ฿10 · รีดอย่างเดียว ฿5<br/>ยีนส์ ฿10 · ชุดเดรส ฿15 · ผ้าขนหนู ฿10</div></div></div>
@@ -561,20 +556,54 @@ function renderAdmin(){
 // ---- FORM LOGIC ----
 let currentCustomer=null;
 async function searchCustomer(){
-  const phone=document.getElementById('search-phone').value.trim();
-  if(!phone)return;
-  const d=await apiGet({action:'getCustomer',phone});
+  const query=document.getElementById('search-phone').value.trim();
+  if(!query)return;
+  // ลองค้นด้วยเบอร์ก่อน
+  const d=await apiGet({action:'getCustomer',phone:query});
   if(d.success){
     currentCustomer=d.customer;
-    document.getElementById('customer-found').style.display='block';
+    showCustomerFound(d.customer);
+    return;
+  }
+  // ถ้าไม่เจอลองค้นด้วยชื่อ
+  const d2=await apiGet({action:'listCustomers'});
+  const found=(d2.customers||[]).filter(c=>
+    (c.name||'').toLowerCase().includes(query.toLowerCase())||
+    (c.nickname||'').toLowerCase().includes(query.toLowerCase())
+  );
+  if(found.length===1){
+    currentCustomer=found[0];
+    showCustomerFound(found[0]);
+    document.getElementById('search-phone').value=found[0].phone;
+  } else if(found.length>1){
+    // แสดงตัวเลือก
+    document.getElementById('customer-found').style.display='none';
     document.getElementById('customer-notfound').style.display='none';
-    document.getElementById('customer-found-text').textContent=`✓ พบลูกค้า: ${d.customer.name} (${d.customer.nickname||''}) - ${d.customer.type==='monthly'?'รายเดือน':'รายวัน'}`;
-    document.getElementById('cust-type').value=d.customer.type||'daily';
+    const el=document.getElementById('search-results');
+    el.style.display='block';
+    el.innerHTML=`<div style="font-size:11px;color:var(--text2);margin-bottom:6px;font-weight:600;">พบลูกค้า ${found.length} คน กรุณาเลือกค่ะ</div>`+
+    found.map(c=>`<div onclick="selectCustomer(${JSON.stringify(c).replace(/"/g,'&quot;')})" style="padding:8px 10px;background:var(--p50);border:1px solid var(--border);border-radius:8px;margin-bottom:5px;cursor:pointer;font-size:12px;">
+      <strong>${c.name}</strong> ${c.nickname?'('+c.nickname+')':''}<br/>
+      <span style="color:var(--text3);">📞 ${c.phone}</span>
+    </div>`).join('');
   } else {
     currentCustomer=null;
+    document.getElementById('search-results').style.display='none';
     document.getElementById('customer-found').style.display='none';
     document.getElementById('customer-notfound').style.display='block';
   }
+}
+function selectCustomer(c){
+  currentCustomer=c;
+  document.getElementById('search-phone').value=c.phone;
+  document.getElementById('search-results').style.display='none';
+  showCustomerFound(c);
+}
+function showCustomerFound(c){
+  document.getElementById('customer-found').style.display='block';
+  document.getElementById('customer-notfound').style.display='none';
+  document.getElementById('customer-found-text').textContent=`✓ ${c.name} ${c.nickname?'('+c.nickname+')':''} · ${c.type==='monthly'?'รายเดือน':'รายวัน'}`;
+  document.getElementById('cust-type').value=c.type||'daily';
 }
 function pick(g,el,v){
   document.querySelectorAll('#'+g+' .rb').forEach(b=>b.classList.remove('on'));
@@ -836,9 +865,12 @@ async function loadCustomers(){
       <div class="cust-card">
         <div class="cust-info">
           <div class="cn">${c.name} ${c.nickname?'('+c.nickname+')':''}</div>
-          <div class="cp">📞 ${c.phone}${c.source?' · '+c.source:''}${c.lineid?' · Line: '+c.lineid:''}</div>
+          <div class="cp">📞 ${String(c.phone).replace(/^'+/,'')}${c.source?' · '+c.source:''}${c.lineid?' · Line: '+c.lineid:''}</div>
         </div>
-        <span class="cust-type ${c.type==='monthly'?'type-monthly':'type-daily'}">${c.type==='monthly'?'รายเดือน':'รายวัน'}</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span class="cust-type ${c.type==='monthly'?'type-monthly':'type-daily'}">${c.type==='monthly'?'รายเดือน':'รายวัน'}</span>
+          <button class="btn-s" style="font-size:10px;padding:3px 8px;" onclick="editCustomer('${String(c.phone).replace(/^'+/,'')}','${c.name}','${c.nickname||''}','${c.type||'daily'}','${c.source||''}','${c.lineid||''}')">แก้ไข</button>
+        </div>
       </div>`).join('');
   }catch(e){el.innerHTML='<div class="empty"><div class="ei">📡</div><p>เชื่อมต่อไม่ได้ค่ะ</p></div>';}
 }
@@ -938,7 +970,46 @@ function doUploadSlip(orderId){
   inp.click();
 }
 
-// ---- UTILS ----
+// ---- EDIT CUSTOMER ----
+function editCustomer(phone,name,nickname,type,source,lineid){
+  document.getElementById('modal').innerHTML=`
+  <div class="modal-bg" onclick="closeModal(event)">
+    <div class="modal">
+      <h3>✏️ แก้ไขข้อมูลลูกค้า</h3>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;">
+        <div class="f"><label>ชื่อ-นามสกุล</label><input class="inp" id="ec-name" value="${name}" style="margin-bottom:0;"/></div>
+        <div class="f"><label>ชื่อเล่น</label><input class="inp" id="ec-nick" value="${nickname}" style="margin-bottom:0;"/></div>
+        <div class="f"><label>จากที่ไหน</label><input class="inp" id="ec-source" value="${source}" style="margin-bottom:0;"/></div>
+        <div class="f"><label>Line ID</label><input class="inp" id="ec-line" value="${lineid}" style="margin-bottom:0;"/></div>
+        <div class="f"><label>ประเภท</label>
+          <select class="inp" id="ec-type" style="margin-bottom:0;">
+            <option value="daily" ${type==='daily'?'selected':''}>รายวัน</option>
+            <option value="monthly" ${type==='monthly'?'selected':''}>รายเดือน</option>
+          </select>
+        </div>
+      </div>
+      <button class="btn-main" onclick="saveEditCustomer('${phone}')">✓ บันทึกการแก้ไข</button>
+      <button class="btn-close-m" onclick="document.getElementById('modal').innerHTML=''">ยกเลิก</button>
+    </div>
+  </div>`;
+}
+async function saveEditCustomer(phone){
+  const fields=[
+    {field:'name',value:document.getElementById('ec-name').value.trim()},
+    {field:'nickname',value:document.getElementById('ec-nick').value.trim()},
+    {field:'source',value:document.getElementById('ec-source').value.trim()},
+    {field:'lineid',value:document.getElementById('ec-line').value.trim()},
+    {field:'type',value:document.getElementById('ec-type').value},
+  ];
+  try{
+    for(const f of fields){
+      await apiGet({action:'updateCustomer',phone,field:f.field,value:f.value});
+    }
+    document.getElementById('modal').innerHTML='';
+    toast('✓ อัปเดตข้อมูลลูกค้าแล้วค่ะ');
+    loadCustomers();
+  }catch(e){toast('อัปเดตไม่ได้ค่ะ','err');}
+}
 function copyLink(link){
   navigator.clipboard.writeText(link).then(()=>toast('✓ คัดลอกลิงก์แล้วค่ะ!')).catch(()=>{
     const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);toast('✓ คัดลอกแล้วค่ะ!');
