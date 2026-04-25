@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Apinya Laundry</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --p900:#1E0A3C;--p800:#2D1060;--p700:#3D1880;--p600:#5B2D9E;--p500:#7B4DBE;--p400:#9B6DD8;
@@ -979,29 +978,9 @@ async function loadSummary(){
 }
 
 // ---- PAYMENT MODAL ----
-function genPromptPayPayload(phone, amount) {
-  // สร้าง PromptPay QR payload ตามมาตรฐาน EMVCo
-  const target = '0066' + phone.replace(/^0/, '');
-  function f(id, val) {
-    const len = String(val.length).padStart(2, '0');
-    return id + len + val;
-  }
-  function crc16(str) {
-    let crc = 0xFFFF;
-    for (let i = 0; i < str.length; i++) {
-      crc ^= str.charCodeAt(i) << 8;
-      for (let j = 0; j < 8; j++) crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
-    }
-    return ((crc & 0xFFFF).toString(16).toUpperCase()).padStart(4, '0');
-  }
-  const merchant = f('00', '0016A000000677010111') + f('01', target);
-  const amtStr = parseFloat(amount).toFixed(2);
-  let payload = f('00', '01') + f('01', '12') + f('29', merchant) + f('53', '764') + f('54', amtStr) + f('58', 'TH') + '6304';
-  return payload + crc16(payload);
-}
-
 function showPayModal(orderId, price) {
   const ppNumber = '0825964602';
+  const qrUrl = `https://promptpay.io/${ppNumber}/${price}.png`;
   document.getElementById('modal').innerHTML = `
   <div class="modal-bg" onclick="closeModal(event)">
     <div class="modal">
@@ -1011,7 +990,7 @@ function showPayModal(orderId, price) {
         <div class="bank-info">พร้อมเพย์ · ${ppNumber}<br/>ธาราทิพย์ สูงขาว</div>
       </div>
       <div style="text-align:center;margin:12px 0;">
-        <div id="qr-canvas" style="display:inline-block;border-radius:10px;border:2px solid var(--border);padding:8px;background:#fff;"></div>
+        <img src="${qrUrl}" style="width:220px;height:220px;border-radius:10px;border:2px solid var(--border);" onerror="this.parentElement.innerHTML='<div style=color:var(--red);font-size:12px;>โหลด QR ไม่ได้ กรุณาตรวจสอบอินเทอร์เน็ตค่ะ</div>'"/>
         <div style="font-size:11px;color:var(--text3);margin-top:6px;">สแกน QR ด้วยแอปธนาคารได้เลยค่ะ</div>
       </div>
       <div class="pay-btns">
@@ -1021,16 +1000,6 @@ function showPayModal(orderId, price) {
       </div>
     </div>
   </div>`;
-  // generate QR หลัง modal render แล้ว
-  setTimeout(() => {
-    const payload = genPromptPayPayload(ppNumber, price);
-    new QRCode(document.getElementById('qr-canvas'), {
-      text: payload,
-      width: 220, height: 220,
-      colorDark: '#2D1060', colorLight: '#FFFFFF',
-      correctLevel: QRCode.CorrectLevel.M
-    });
-  }, 50);
 }
 async function saveCustNote(id){
   const val=document.getElementById('cust-note-'+id)?.value.trim();
