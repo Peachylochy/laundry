@@ -315,6 +315,17 @@ async function renderCustomerView(customer, orderId=''){
       </div>
       <a href="https://maps.app.goo.gl/hs26SpipBDsHPU4f8" target="_blank" class="btn-map">📍 ดูแผนที่ Google Maps</a>
     </div>
+    <div class="ic" style="margin-top:12px;">
+      <div class="ih">💰 ราคาบริการ</div>
+      <div class="ib">
+        <div class="ir"><div class="ii">👕</div><div><div class="il">รายชิ้น</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ซักรีด ฿10 · รีดอย่างเดียว ฿5<br/>ยีนส์ ฿10 · ชุดเดรส ฿15 · ผ้าขนหนู ฿10</div></div></div>
+        <div class="ir"><div class="ii">🧥</div><div><div class="il">ซักแห้ง</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ชุดข้าราชการ ฿120 · เสื้อกันหนาว/ผ้าไทย ฿100<br/>สูท ฿80</div></div></div>
+        <div class="ir"><div class="ii">🛏</div><div><div class="il">ชิ้นใหญ่</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ผ้านวม ฿60-100 · ชุดเครื่องนอน ฿100-200</div></div></div>
+        <div class="ir"><div class="ii">📅</div><div><div class="il">รายเดือน</div><div class="iv">฿800/เดือน</div><div class="is">ไม่จำกัดชิ้น (เฉพาะซักรีดปกติ)</div></div></div>
+        <div class="ir"><div class="ii">⚡</div><div><div class="il">ค่าด่วน</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ด่วน 3 วัน +฿20 · ด่วน 24ชม +฿40</div></div></div>
+        <div class="ir"><div class="ii">🚗</div><div><div class="il">ค่าส่ง</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">รับเอง/ม.พะเยา ฟรี · นอกพื้นที่ +฿20</div></div></div>
+      </div>
+    </div>
   </div>`;
   const phone=customer?.phone||custPhone;
   const d=await apiGet({action:'listOrders'});
@@ -393,7 +404,6 @@ function renderAdmin(){
     <button class="tab" onclick="sw('list')">รายการ</button>
     <button class="tab" onclick="sw('customers')">ลูกค้า</button>
     <button class="tab" onclick="sw('summary')">สรุปยอด</button>
-    <button class="tab" onclick="sw('shop')">ร้าน</button>
   </div>
 
   <!-- ADD ORDER -->
@@ -491,12 +501,12 @@ function renderAdmin(){
       <div class="stat"><div class="stat-n" id="st-unpaid">—</div><div class="stat-l">ค้างชำระ</div></div>
     </div>
     <div class="chips">
-      <span class="chip on" onclick="setF('all',this)">ทั้งหมด</span>
-      <span class="chip" onclick="setF('active',this)">กำลังดำเนินการ</span>
-      <span class="chip" onclick="setF('ready',this)">พร้อมส่ง</span>
-      <span class="chip" onclick="setF('urgent',this)">ด่วน</span>
-      <span class="chip" onclick="setF('pay-wait',this)">รอตรวจสอบเงิน</span>
-      <span class="chip" onclick="setF('unpaid',this)">ค้างชำระ</span>
+      <span class="chip on" data-filter="all" onclick="setF('all',this)">ทั้งหมด</span>
+      <span class="chip" data-filter="active" onclick="setF('active',this)">กำลังดำเนินการ</span>
+      <span class="chip" data-filter="ready" onclick="setF('ready',this)">พร้อมส่ง</span>
+      <span class="chip" data-filter="urgent" onclick="setF('urgent',this)">ด่วน</span>
+      <span class="chip" data-filter="pay-wait" onclick="setF('pay-wait',this)">รอตรวจสอบเงิน</span>
+      <span class="chip" data-filter="unpaid" onclick="setF('unpaid',this)">ค้างชำระ</span>
     </div>
     <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
     <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadOrders()">↻ รีเฟรช</button>
@@ -530,25 +540,14 @@ function renderAdmin(){
   <div id="tab-summary" class="section">
     <div class="sh"><div class="sh-bar"></div><h2>สรุปยอดวันนี้</h2></div>
     <div class="sum-grid" id="summary-grid"><div class="loading" style="grid-column:1/-1;">กำลังโหลด...</div></div>
-    <div class="sh"><div class="sh-bar"></div><h2>รายการค้างชำระ</h2></div>
+    <div class="sh" style="margin-top:4px;"><div class="sh-bar"></div><h2>🚚 พร้อมส่งคืน (ชำระแล้ว)</h2></div>
+    <div id="ready-paid-list"><div class="loading">กำลังโหลด...</div></div>
+    <div class="sh" style="margin-top:8px;"><div class="sh-bar"></div><h2>รายการค้างชำระ</h2></div>
     <div id="unpaid-list"><div class="loading">กำลังโหลด...</div></div>
     <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadSummary()">↻ รีเฟรช</button>
   </div>
 
-  <!-- SHOP (Admin only - price list) -->
-  <div id="tab-shop" class="section">
-    <div class="sh"><div class="sh-bar"></div><h2>ราคาบริการ</h2></div>
-    <div class="ic"><div class="ih">💰 ราคาบริการ</div>
-      <div class="ib">
-        <div class="ir"><div class="ii">👕</div><div><div class="il">รายชิ้น</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ซักรีด ฿10 · รีดอย่างเดียว ฿5<br/>ยีนส์ ฿10 · ชุดเดรส ฿15 · ผ้าขนหนู ฿10</div></div></div>
-        <div class="ir"><div class="ii">🧥</div><div><div class="il">ซักแห้ง</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ชุดข้าราชการ ฿120 · เสื้อกันหนาว/ผ้าไทย ฿100<br/>สูท ฿80</div></div></div>
-        <div class="ir"><div class="ii">🛏</div><div><div class="il">ชิ้นใหญ่</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ผ้านวม ฿60-100 · ชุดเครื่องนอน ฿100-200</div></div></div>
-        <div class="ir"><div class="ii">📅</div><div><div class="il">รายเดือน</div><div class="iv">฿800/เดือน</div><div class="is">ไม่จำกัดชิ้น (เฉพาะซักรีดปกติ)</div></div></div>
-        <div class="ir"><div class="ii">⚡</div><div><div class="il">ค่าด่วน</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">ด่วน 3 วัน +฿20 · ด่วน 24ชม +฿40</div></div></div>
-        <div class="ir"><div class="ii">🚗</div><div><div class="il">ค่าส่ง</div><div class="iv" style="font-size:12px;font-weight:500;line-height:1.8;">รับเอง/ม.พะเยา ฟรี · นอกพื้นที่ +฿20</div></div></div>
-      </div>
-    </div>
-  </div>`;
+  `;
   document.getElementById('pickup-date').value=new Date().toISOString().split('T')[0];
   loadOrders();loadCustomers();
 }
@@ -565,11 +564,12 @@ async function searchCustomer(){
     showCustomerFound(d.customer);
     return;
   }
-  // ถ้าไม่เจอลองค้นด้วยชื่อ
+  // ถ้าไม่เจอลองค้นด้วยชื่อ / ชื่อเล่น
   const d2=await apiGet({action:'listCustomers'});
+  const q=query.toLowerCase();
   const found=(d2.customers||[]).filter(c=>
-    (c.name||'').toLowerCase().includes(query.toLowerCase())||
-    (c.nickname||'').toLowerCase().includes(query.toLowerCase())
+    (c.name||'').toLowerCase().includes(q)||
+    (c.nickname||'').toLowerCase().includes(q)
   );
   if(found.length===1){
     currentCustomer=found[0];
@@ -749,6 +749,22 @@ function renderList(){
   document.getElementById('st-total').textContent=orders.length;
   document.getElementById('st-pending').textContent=active;
   document.getElementById('st-unpaid').textContent=unpaid;
+
+  // อัพเดท badge บน chips
+  const counts={
+    all: orders.length,
+    active: orders.filter(o=>['pending','washing','ironing'].includes(o.status)).length,
+    ready: orders.filter(o=>o.status==='ready').length,
+    urgent: orders.filter(o=>o.urgent!=='normal').length,
+    'pay-wait': orders.filter(o=>o.payment_method&&String(o.paid)!=='true').length,
+    unpaid: orders.filter(o=>String(o.paid)!=='true'&&o.status==='ready').length,
+  };
+  const chipLabels={all:'ทั้งหมด',active:'กำลังดำเนินการ',ready:'พร้อมส่ง',urgent:'ด่วน','pay-wait':'รอตรวจสอบเงิน',unpaid:'ค้างชำระ'};
+  document.querySelectorAll('.chip[data-filter]').forEach(c=>{
+    const f=c.dataset.filter;
+    const n=counts[f]||0;
+    c.innerHTML=chipLabels[f]+(n>0?` <span style="background:${c.classList.contains('on')?'rgba(255,255,255,0.3)':'var(--p100)'};color:${c.classList.contains('on')?'#fff':'var(--p700)'};border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;">${n}</span>`:'');
+  });
   const list=getF();
   const el=document.getElementById('order-list');
   if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ไม่มีรายการค่ะ</p></div>';return;}
@@ -870,9 +886,18 @@ async function loadCustomers(){
         <div style="display:flex;align-items:center;gap:6px;">
           <span class="cust-type ${c.type==='monthly'?'type-monthly':'type-daily'}">${c.type==='monthly'?'รายเดือน':'รายวัน'}</span>
           <button class="btn-s" style="font-size:10px;padding:3px 8px;" onclick="editCustomer('${String(c.phone).replace(/^'+/,'')}','${c.name}','${c.nickname||''}','${c.type||'daily'}','${c.source||''}','${c.lineid||''}')">แก้ไข</button>
+          <button class="btn-s btn-del" style="font-size:10px;padding:3px 8px;" onclick="deleteCustomer('${String(c.phone).replace(/^'+/,'')}','${c.name}')">ลบ</button>
         </div>
       </div>`).join('');
   }catch(e){el.innerHTML='<div class="empty"><div class="ei">📡</div><p>เชื่อมต่อไม่ได้ค่ะ</p></div>';}
+}
+async function deleteCustomer(phone, name){
+  if(!confirm('ลบลูกค้า "'+name+'" ออกจากระบบ?\n(ข้อมูลออเดอร์จะยังคงอยู่)'))return;
+  try{
+    const d=await apiGet({action:'deleteCustomer',phone});
+    if(d.success){toast('ลบลูกค้าแล้วค่ะ');loadCustomers();}
+    else toast(d.error||'ลบไม่ได้ค่ะ','err');
+  }catch(e){toast('เชื่อมต่อไม่ได้ค่ะ','err');}
 }
 async function addCustomer(){
   const phone=document.getElementById('nc-phone').value.trim();
@@ -908,14 +933,36 @@ async function loadSummary(){
     const unpaidEl=document.getElementById('unpaid-list');
     const unpaid=orders.filter(o=>String(o.paid)!=='true'&&o.price&&o.price!='0');
     if(unpaidEl){
-      if(!unpaid.length){unpaidEl.innerHTML='<div class="empty"><div class="ei">✅</div><p>ไม่มีรายการค้างชำระค่ะ</p></div>';return;}
-      unpaidEl.innerHTML=unpaid.map(o=>`
+      if(!unpaid.length){unpaidEl.innerHTML='<div class="empty"><div class="ei">✅</div><p>ไม่มีรายการค้างชำระค่ะ</p></div>';}
+      else unpaidEl.innerHTML=unpaid.map(o=>`
         <div class="card">
           <div class="ctop">
             <div><div class="cname">${o.owner||''}</div><div class="csub">${o.id} · ${o.phone}</div></div>
             <span class="bg bg-up">ค้างชำระ ฿${o.price}</span>
           </div>
           <div class="cdet">${o.desc}</div>
+        </div>`).join('');
+    }
+
+    // พร้อมส่งคืน: status=ready และ paid=true เท่านั้น
+    const readyPaidEl=document.getElementById('ready-paid-list');
+    const readyPaid=orders.filter(o=>o.status==='ready'&&String(o.paid)==='true');
+    if(readyPaidEl){
+      if(!readyPaid.length){readyPaidEl.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ยังไม่มีรายการพร้อมส่งค่ะ</p></div>';}
+      else readyPaidEl.innerHTML=readyPaid.map(o=>`
+        <div class="card">
+          <div class="ctop">
+            <div>
+              <div class="cname">${o.owner||''} ${o.nickname?'('+o.nickname+')':''}</div>
+              <div class="csub">${o.id} · 📞 ${o.phone}</div>
+            </div>
+            <span class="bg bg-d">✓ ชำระแล้ว ฿${o.price}</span>
+          </div>
+          <div class="cdet">${o.desc}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:3px;">
+            🚚 ${DELIVERY_LABEL[o.delivery]||o.delivery}${o.delivery_time?' · '+(o.delivery_time==='morning'?'ช่วงเช้า':'ช่วงเย็น'):''}
+            ${String(o.hanger)==='true'?' · 🪝 ใส่ไม้แขวน':''}
+          </div>
         </div>`).join('');
     }
   }catch(e){}
@@ -1016,7 +1063,7 @@ function copyLink(link){
   });
 }
 function sw(name){
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['add','list','customers','summary','shop'][i]===name));
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',['add','list','customers','summary'][i]===name));
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   if(name==='list')loadOrders();
