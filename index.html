@@ -540,12 +540,12 @@ function renderAdmin(){
       <div class="stat"><div class="stat-n" id="st-unpaid">—</div><div class="stat-l">ค้างชำระ</div></div>
     </div>
     <div class="chips">
-      <span class="chip on" onclick="setF('all',this)">ทั้งหมด</span>
-      <span class="chip" onclick="setF('active',this)">กำลังดำเนินการ</span>
-      <span class="chip" onclick="setF('ready',this)">พร้อมส่ง</span>
-      <span class="chip" onclick="setF('urgent',this)">ด่วน</span>
-      <span class="chip" onclick="setF('pay-wait',this)">รอตรวจสอบเงิน</span>
-      <span class="chip" onclick="setF('unpaid',this)">ค้างชำระ</span>
+      <span class="chip on" data-filter="all" onclick="setF('all',this)">ทั้งหมด</span>
+      <span class="chip" data-filter="active" onclick="setF('active',this)">กำลังดำเนินการ</span>
+      <span class="chip" data-filter="ready" onclick="setF('ready',this)">พร้อมส่ง</span>
+      <span class="chip" data-filter="urgent" onclick="setF('urgent',this)">ด่วน</span>
+      <span class="chip" data-filter="pay-wait" onclick="setF('pay-wait',this)">รอตรวจสอบเงิน</span>
+      <span class="chip" data-filter="unpaid" onclick="setF('unpaid',this)">ค้างชำระ</span>
     </div>
     <div id="order-list"><div class="loading">กำลังโหลด...</div></div>
     <button class="btn-s" style="width:100%;text-align:center;padding:8px;margin-top:7px;" onclick="loadOrders()">↻ รีเฟรช</button>
@@ -799,6 +799,10 @@ function renderList(){
   document.getElementById('st-total').textContent=orders.length;
   document.getElementById('st-pending').textContent=active;
   document.getElementById('st-unpaid').textContent=unpaid;
+  // badge บน chips
+  const counts={all:orders.length,active:orders.filter(o=>['pending','washing','ironing'].includes(o.status)).length,ready:orders.filter(o=>o.status==='ready').length,urgent:orders.filter(o=>o.urgent!=='normal').length,'pay-wait':orders.filter(o=>o.payment_method&&String(o.paid)!=='true').length,unpaid:orders.filter(o=>String(o.paid)!=='true'&&o.status==='ready').length};
+  const chipLabels={all:'ทั้งหมด',active:'กำลังดำเนินการ',ready:'พร้อมส่ง',urgent:'ด่วน','pay-wait':'รอตรวจสอบเงิน',unpaid:'ค้างชำระ'};
+  document.querySelectorAll('.chip[data-filter]').forEach(c=>{const f=c.dataset.filter;const n=counts[f]||0;c.innerHTML=chipLabels[f]+(n>0?` <span style="background:${c.classList.contains('on')?'rgba(255,255,255,0.3)':'var(--p100)'};color:${c.classList.contains('on')?'#fff':'var(--p700)'};border-radius:10px;padding:1px 6px;font-size:10px;font-weight:700;">${n}</span>`:'');});
   const list=getF();
   const el=document.getElementById('order-list');
   if(!list.length){el.innerHTML='<div class="empty"><div class="ei">🧺</div><p>ไม่มีรายการค่ะ</p></div>';return;}
