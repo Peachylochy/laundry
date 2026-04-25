@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Apinya Laundry</title>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
 :root{
   --p900:#1E0A3C;--p800:#2D1060;--p700:#3D1880;--p600:#5B2D9E;--p500:#7B4DBE;--p400:#9B6DD8;
@@ -383,6 +384,14 @@ function customerCardHTML(o){
     ${(o.status==='ready'||o.status==='done')&&String(o.paid)!=='true'&&!o.payment_method?`
     <button class="btn-purple" style="margin-top:8px;padding:10px;" onclick="showPayModal('${o.id}','${o.price||0}')">💳 ชำระเงิน</button>`:''}
     ${payWait?`<div class="pay-wait-box">⏳ แจ้งชำระแล้ว รอร้านยืนยันค่ะ</div>`:''}
+    ${o.status==='ready'?`
+    <div style="margin-top:10px;">
+      <div style="font-size:11px;color:var(--text2);font-weight:700;margin-bottom:5px;">💬 หมายเหตุถึงร้าน (เช่น นัดรับเวลา/สถานที่)</div>
+      <div style="display:flex;gap:6px;">
+        <input id="cust-note-${o.id}" class="inp" style="margin-bottom:0;font-size:12px;padding:8px 11px;" placeholder="เช่น รับที่โต๊ะออฟฟิศ ชั้น 2 ค่ะ" value="${o.customer_note||''}"/>
+        <button class="btn-s" style="white-space:nowrap;padding:8px 12px;font-size:12px;" onclick="saveCustNote('${o.id}')">ส่ง</button>
+      </div>
+    </div>`:''}
     ${(o.status==='ready'||o.status==='done')&&String(o.paid)==='true'?`<div class="ready-box">✅ ชำระเงินเรียบร้อยแล้วค่ะ ขอบคุณมากนะคะ 🙏</div>`:''}
   </div>`;
 }
@@ -801,6 +810,7 @@ function adminCardHTML(o){
     </div>
     <div class="cdet">${o.desc}</div>
     ${o.note?`<div class="cnote">📝 ${o.note}</div>`:''}
+    ${o.customer_note?`<div style="margin-top:5px;padding:6px 10px;background:#E8F0FE;border-radius:8px;border:1px solid #a8c4f5;font-size:11px;color:#1a56db;font-weight:600;">💬 ลูกค้าแจ้ง: ${o.customer_note}</div>`:''}
     ${String(o.hanger)==='true'?'<div class="hanger-warn">🪝 ส่งแบบใส่ไม้แขวน — ลูกค้าต้องเตรียมไม้แขวนมาด้วยค่ะ</div>':''}
     ${pin||pdone||pslip?`<div class="photos-row">
       ${pin?`<div class="photo-item"><span>ก่อนซัก</span><a href="${o.photo_in}" target="_blank"><img src="${o.photo_in}" class="pthumb"/></a></div>`:''}
@@ -969,26 +979,66 @@ async function loadSummary(){
 }
 
 // ---- PAYMENT MODAL ----
-function showPayModal(orderId,price){
-  const ppNumber='0825964602';
-  const ppTarget=ppNumber.replace(/^0/,'66'); // แปลง 0825964602 → 66825964602
-  const deepLink=`promptpay://pay?target=${ppTarget}&amount=${price}`;
-  document.getElementById('modal').innerHTML=`
+function genPromptPayPayload(phone, amount) {
+  // สร้าง PromptPay QR payload ตามมาตรฐาน EMVCo
+  const target = '0066' + phone.replace(/^0/, '');
+  function f(id, val) {
+    const len = String(val.length).padStart(2, '0');
+    return id + len + val;
+  }
+  function crc16(str) {
+    let crc = 0xFFFF;
+    for (let i = 0; i < str.length; i++) {
+      crc ^= str.charCodeAt(i) << 8;
+      for (let j = 0; j < 8; j++) crc = (crc & 0x8000) ? (crc << 1) ^ 0x1021 : crc << 1;
+    }
+    return ((crc & 0xFFFF).toString(16).toUpperCase()).padStart(4, '0');
+  }
+  const merchant = f('00', '0016A000000677010111') + f('01', target);
+  const amtStr = parseFloat(amount).toFixed(2);
+  let payload = f('00', '01') + f('01', '12') + f('29', merchant) + f('53', '764') + f('54', amtStr) + f('58', 'TH') + '6304';
+  return payload + crc16(payload);
+}
+
+function showPayModal(orderId, price) {
+  const ppNumber = '0825964602';
+  document.getElementById('modal').innerHTML = `
   <div class="modal-bg" onclick="closeModal(event)">
     <div class="modal">
       <h3>💳 ชำระเงิน</h3>
       <div class="modal-bank">
         <div class="amount">฿${price}</div>
-        <div class="bank-info">พร้อมเพย์<br/><span class="bank-no">${ppNumber}</span><br/>ธาราทิพย์ สูงขาว</div>
+        <div class="bank-info">พร้อมเพย์ · ${ppNumber}<br/>ธาราทิพย์ สูงขาว</div>
+      </div>
+      <div style="text-align:center;margin:12px 0;">
+        <div id="qr-canvas" style="display:inline-block;border-radius:10px;border:2px solid var(--border);padding:8px;background:#fff;"></div>
+        <div style="font-size:11px;color:var(--text3);margin-top:6px;">สแกน QR ด้วยแอปธนาคารได้เลยค่ะ</div>
       </div>
       <div class="pay-btns">
-        <a href="${deepLink}" class="btn-slip" style="display:block;text-align:center;text-decoration:none;" onclick="setTimeout(()=>document.getElementById('modal').innerHTML='',1500)">📲 เปิดแอปธนาคารโอนเงิน</a>
         <button class="btn-slip" onclick="doUploadSlip('${orderId}')">📎 แนบสลิปโอนเงิน</button>
         <button class="btn-cash" onclick="doCash('${orderId}')">💵 จ่ายเงินสดที่ร้าน</button>
         <button class="btn-close-m" onclick="document.getElementById('modal').innerHTML=''">ปิด</button>
       </div>
     </div>
   </div>`;
+  // generate QR หลัง modal render แล้ว
+  setTimeout(() => {
+    const payload = genPromptPayPayload(ppNumber, price);
+    new QRCode(document.getElementById('qr-canvas'), {
+      text: payload,
+      width: 220, height: 220,
+      colorDark: '#2D1060', colorLight: '#FFFFFF',
+      correctLevel: QRCode.CorrectLevel.M
+    });
+  }, 50);
+}
+async function saveCustNote(id){
+  const val=document.getElementById('cust-note-'+id)?.value.trim();
+  if(!val){toast('กรุณากรอกหมายเหตุก่อนนะคะ','err');return;}
+  try{
+    await apiGet({action:'updateOrder',id,field:'customer_note',value:val});
+    toast('✓ ส่งหมายเหตุแล้วค่ะ ร้านจะได้รับข้อความนี้');
+  }catch(e){toast('ส่งไม่ได้ค่ะ','err');}
 }
 function closeModal(e){if(e.target.classList.contains('modal-bg'))document.getElementById('modal').innerHTML='';}
 async function doCash(id){
