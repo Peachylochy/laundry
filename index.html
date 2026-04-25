@@ -970,15 +970,19 @@ async function loadSummary(){
 
 // ---- PAYMENT MODAL ----
 function showPayModal(orderId,price){
+  const ppNumber='0825964602';
+  const ppTarget=ppNumber.replace(/^0/,'66'); // แปลง 0825964602 → 66825964602
+  const deepLink=`promptpay://pay?target=${ppTarget}&amount=${price}`;
   document.getElementById('modal').innerHTML=`
   <div class="modal-bg" onclick="closeModal(event)">
     <div class="modal">
       <h3>💳 ชำระเงิน</h3>
       <div class="modal-bank">
         <div class="amount">฿${price}</div>
-        <div class="bank-info">ธนาคารกสิกรไทย<br/><span class="bank-no">2161036679</span><br/>ธาราทิพย์ สูงขาว</div>
+        <div class="bank-info">พร้อมเพย์<br/><span class="bank-no">${ppNumber}</span><br/>ธาราทิพย์ สูงขาว</div>
       </div>
       <div class="pay-btns">
+        <a href="${deepLink}" class="btn-slip" style="display:block;text-align:center;text-decoration:none;" onclick="setTimeout(()=>document.getElementById('modal').innerHTML='',1500)">📲 เปิดแอปธนาคารโอนเงิน</a>
         <button class="btn-slip" onclick="doUploadSlip('${orderId}')">📎 แนบสลิปโอนเงิน</button>
         <button class="btn-cash" onclick="doCash('${orderId}')">💵 จ่ายเงินสดที่ร้าน</button>
         <button class="btn-close-m" onclick="document.getElementById('modal').innerHTML=''">ปิด</button>
